@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Domótica Daniel Calvo</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/temperatura.css">
+    
+</head>
+<body>
+    <main>
+        <div class="content-all">
+            <header>
+                
+            </header>
+            <input type="checkbox" id="check">
+            <label for="check" class="icon-menu">
+                <img src="icon/menu.svg" height=26 width=26></img>
+            Menu            
+            </label>
+            <h2>OpenHab</h2>
+            <p class="opcion1">Temperatura</p>
+            <nav class="menu">
+                <ul>
+                    <li>Inicio</li>
+                    <li><a href="otra.html">Temperatura</a></li>
+                    <li>Tutoriales</li>
+                    <li>Programacion</li>
+                    <li>Desarrollo</li>
+                    <li>Cursos</li>
+                    <li>Nosotros</li>
+                    <li>Diseño</li>
+                    <li>Contactos</li>
+                </ul>
+            </nav>
+            <div class="temperatura">
+                <p class="titulo1">Temperatura interna</p>
+                    <div class="tempGauges">
+
+                        <div class="column11">
+			{% if temperatura.sotano > 26 %}
+                        	<div class="circle_container_hot">
+			{% elif temperatura.sotano > 15 %}
+                        	<div class="circle_container">
+			{% else %}
+                        	<div class="circle_container_cold">
+			{% endif %}
+				<span>{{ temperatura.sotano }}&deg;</span>
+                        </div>
+                            <p></p>
+                            <p class="tempGaugeTitle">Sotano</p>
+                        </div>
+
+                        <div class="column12">
+                        <div class="circle_container_cold">
+				<span>{{ temperatura.despacho }}&deg;</span>
+                        </div>
+                            <p></p>
+                            <p class="tempGaugeTitle">Despacho</p>
+                        </div>
+
+                        <div class="column13">
+                        <div class="circle_container_hot">
+				<span>{{ temperatura.buhardilla }}&deg;</span>
+                        </div>
+                        </div>
+                    </div>
+
+
+                <p>hola</p>
+                <p>hola</p>
+                <p>hola</p>
+                <p>hola</p>
+            </div>
+            
+            
+            <div class="temperatura">
+                <p class="titulo1">Temperatura externa</p>
+                <p>hola</p>
+                <p>hola</p>
+                <p>hola</p>
+                <p>hola1</p>
+            </div>
+            <p class="titulo1">Gráficos</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola2</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola3</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola4</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola5</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola6</p>
+            <p>hola</p>
+        </div>
+    </main>
+</body>
+</html>
