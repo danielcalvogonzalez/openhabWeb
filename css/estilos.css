@@ -1,0 +1,131 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+main {
+    width: 100%;
+    height: auto;
+    background: #34495E;
+    position: absolute;
+}
+
+.content-all {
+    width: 100%;
+    max-width: 1000px;
+    background: #17A086;
+    margin: auto;
+    margin-top: 80px;
+}
+
+header {
+    width: 100%;
+    height: 60px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: #19BC9D;
+}
+
+#check{
+    display: none;
+}
+
+#check:checked ~ .menu {
+    width: 400px;
+}
+
+
+.menu{
+    position: fixed;
+    top: 60px;
+    width: 0px;
+    height: 100vh;
+    background: #2D3E50;
+    transition: all 300ms;
+    overflow: hidden;
+    z-index: 99;
+}
+
+.menu li {
+    list-style: none;
+    padding: 14px;
+    color: white;
+    cursor: pointer;
+    transition: all 300ms;
+    display: block;
+    width: 300px;
+}
+
+.menu li:hover {
+    background: rgba(0,0,0,0.2);
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+}
+
+.content-all label {
+    position: fixed;
+    width: 100%;
+    top: 14px;
+    font-size: 26px;
+    color: white;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.content-all h2 {
+    position: fixed;
+    width: 100%;
+    max-width: 1000px;
+    top: 14px;
+    font-size: 26px;
+    text-align: right;
+    color: white;
+}
+
+.content-all .opcion1 {
+    position: fixed;
+    width: 100%;
+    max-width: 1000px;
+    top: 14px;
+    font-size: 26px;
+    text-align: center;
+    color: white;
+}
+
+.content-all .titulo1 {
+    padding: 30px;
+    color: white;
+    font-size: 24px;
+    text-align: center;
+}
+
+.temperatura {
+    border: 10px;
+    border-style: solid;
+    border-color: #17A086;
+    width: 94%;
+    background: #EAEAEA;
+    background: #107863;
+    margin: auto;
+    margin-top: 10px;
+    height: 350px;
+}
+
+.temperatura .titulo1 {
+    padding: 30px;
+    color: white;
+    font-size: 24px;
+    text-align: center;
+}
+
+.tempGauges {
+    width: 84%;
+    max-width: 1000px;
+    height: 120px;
+}

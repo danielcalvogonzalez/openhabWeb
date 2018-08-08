@@ -1,10 +1,28 @@
-
-
 .column11 {
-padding:2px;
-margin-right:5px;
-width:100px;
-float:left;
+    padding: 2px;
+    margin-right: 5px;
+    width: 100px;
+    float: left;
+    position: relative;
+    left: 10%;
+}
+
+.column12 {
+    padding:2px;
+    margin-right:5px;
+    width:100px;
+    float: left;
+    left: 42%;
+    position: relative;
+}
+
+.column13 {
+    padding:2px;
+    margin-right:5px;
+    width:100px;
+    position: relative;
+    float: left;
+    left: 74%;
 }
 
 .circle_container {
@@ -19,7 +37,7 @@ float:left;
     line-height: 80px;
     text-align: center;
     background: #266c30;
-    box-shadow: 0 0 0 3px #266c30; 
+    box-shadow: 0 0 0 3px #266c30;
 }
 
 .circle_container_cold {
@@ -33,7 +51,7 @@ float:left;
     line-height: 80px;
     text-align: center;
     background: #390bc4;
-    box-shadow: 0 0 0 3px #390bc4; 
+    box-shadow: 0 0 0 3px #390bc4;
 }
 
 .circle_container_hot {
@@ -47,5 +65,11 @@ float:left;
     line-height: 80px;
     text-align: center;
     background: #ed0000;
-    box-shadow: 0 0 0 3px #ed0000; 
+    box-shadow: 0 0 0 3px #ed0000;
+}
+
+.tempGaugeTitle {
+    text-align: center;
+    color: white;
+    margin-top: 10px;
 }
