@@ -6,6 +6,7 @@ from mysql.connector import errorcode
 Despacho = -1
 Buhardilla = -1
 Sotano = -1
+Exterior = -1
 Temperaturas = {}
 
 app = Flask(__name__)
@@ -33,6 +34,12 @@ def temp():
     return render_template("temperatura.html", temperatura = Temperaturas) 
 
 
+def updateTemps():
+    Temperaturas['despacho'] = getTemp(Despacho) if Despacho != -1 else -99
+    Temperaturas['sotano'] = getTemp(Sotano) if Sotano != -1 else -99
+    Temperaturas['buhardilla'] = getTemp(Buhardilla) if Buhardilla != -1 else -99
+    Temperaturas['exterior'] = getTemp(Exterior) if Exterior != -1 else -99
+
 #
 # Comienzo
 #
@@ -54,12 +61,14 @@ query = ("SELECT * from Items")
 cursor.execute(query)
 
 for (itemId, itemName ) in cursor:
-      if itemName == "DespachoTemp":
-          Despacho = itemId
-      if itemName == "SotanoTemp":
-          Sotano = itemId
-      if itemName == "BuhardillaTemp":
-          Buhardilla = itemId
+    if itemName == "DespachoTemp":
+        Despacho = itemId
+    if itemName == "SotanoTemp":
+        Sotano = itemId
+    if itemName == "BuhardillaTemp":
+        Buhardilla = itemId
+    if itemName == "Temperatura":
+        Exterior = itemId
 
 cursor.close()
 
@@ -69,6 +78,8 @@ if Sotano != -1:
     Temperaturas['sotano'] = getTemp(Sotano)
 if Buhardilla != -1:
     Temperaturas['buhardilla'] = getTemp(Buhardilla)
+if Exterior != -1:
+    Temperaturas['exterior'] = getTemp(Exterior)
 
 """
 print("Despacho {}".format(Despacho))

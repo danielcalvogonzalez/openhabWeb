@@ -52,7 +52,13 @@
                         </div>
 
                         <div class="column12">
-                        <div class="circle_container_cold">
+			{% if temperatura.despacho > 26 %}
+                        	<div class="circle_container_hot">
+			{% elif temperatura.despacho > 15 %}
+                        	<div class="circle_container">
+			{% else %}
+                        	<div class="circle_container_cold">
+			{% endif %}
 				<span>{{ temperatura.despacho }}&deg;</span>
                         </div>
                             <p></p>
@@ -60,7 +66,13 @@
                         </div>
 
                         <div class="column13">
-                        <div class="circle_container_hot">
+			{% if temperatura.buhardilla > 26 %}
+                        	<div class="circle_container_hot">
+			{% elif temperatura.buhardilla > 15 %}
+                        	<div class="circle_container">
+			{% else %}
+                        	<div class="circle_container_cold">
+			{% endif %}
 				<span>{{ temperatura.buhardilla }}&deg;</span>
                         </div>
                         </div>
