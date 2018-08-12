@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 def getTemp(Sensor):
     try:
-        cnx = mysql.connector.connect(option_files='myopc.cnf')
+        cnx = mysql.connector.connect(user="openhabSQL", password="", host="192.168.24.5", database = "openhab2")
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
          print("Something is wrong with your user name or password")
@@ -43,12 +43,13 @@ def getTemp(Sensor):
 @app.route("/temperatura")
 def temp():
     updateTemps()
-    return render_template("temperatura.html", titulo = "Temperatura", 
+    return render_template("temperatura.html", titulo = "Temperatura-1", 
                             temperatura = Temperaturas) 
 
+
 @app.route("/red")
-def red():
-    return "HOLA HOLA"
+def showRed():
+    return render_template("redlocal.html", titulo = "Diseno Red") 
 
 def updateTemps():
     Temperaturas['despacho'] = getTemp(Despacho) if Despacho != -1 else -99
@@ -61,7 +62,7 @@ def updateTemps():
 #
 
 try:
-    cnx = mysql.connector.connect(option_files='myopc.cnf')
+    cnx = mysql.connector.connect(user="openhabSQL", password="", host="192.168.24.5", database = "openhab2")
 except mysql.connector.Error as err:
     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
        print("Something is wrong with your user name or password")

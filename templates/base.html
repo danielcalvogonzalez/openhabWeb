@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Domótica Daniel Calvo</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/temperatura.css">
+    
+</head>
+<body>
+    <main>
+        <div class="content-all">
+            <header>
+                
+            </header>
+            <input type="checkbox" id="check">
+            <label for="check" class="icon-menu">
+                <img src="icon/menu.svg" height=26 width=26></img>
+            Menu            
+            </label>
+            <h2>OpenHab</h2>
+	    <p class="opcion1">{{ titulo }}</p>
+            <nav class="menu">
+                <ul>
+                    <li>Inicio</li>
+                    <li><a href="/temperatura">Temperatura</a></li>
+		    <li><a href="/red">Red Local</a></li>
+                    <li>Programacion</li>
+                    <li>Desarrollo</li>
+                    <li>Cursos</li>
+                    <li>Nosotros</li>
+                    <li>Diseño</li>
+                    <li>Contactos</li>
+                </ul>
+            </nav>
+
+	    {% block contenido %}{% endblock %}
+
+        </div>
+    </main>
+</body>
+</html>
