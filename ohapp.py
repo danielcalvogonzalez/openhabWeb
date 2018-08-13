@@ -1,19 +1,22 @@
 from flask import Flask, render_template
 import mysql.connector
+import datetime
 
 from mysql.connector import errorcode
 
-Despacho = -1
-Buhardilla = -1
-Sotano = -1
-Exterior = -1
+Despacho    = -1
+Buhardilla  = -1
+Sotano      = -1
+Exterior    = -1
 Temperaturas = {}
+sondaTemperaturas = {}
 
 app = Flask(__name__)
 
 def getTemp(Sensor):
     try:
-        cnx = mysql.connector.connect(user="openhabSQL", password="", host="192.168.24.5", database = "openhab2")
+#        cnx = mysql.connector.connect(user="openhabSQL", password="", host="192.168.24.5", database = "openhab2")
+        cnx = mysql.connector.connect(option_files="myopc.cnf")
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
          print("Something is wrong with your user name or password")
@@ -39,17 +42,34 @@ def getTemp(Sensor):
     cnx.close()
     return valor
 
+def getTempEx(Sensor):
+    if Sensor == -1:
+        return (datetime.datetime.now(), -99)
 
-@app.route("/temperatura")
-def temp():
-    updateTemps()
-    return render_template("temperatura.html", titulo = "Temperatura-1", 
-                            temperatura = Temperaturas) 
+    try:
+        cnx = mysql.connector.connect(option_files="myopc.cnf")
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+         print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist")
+        else:
+            print(err)
 
+    cursor = cnx.cursor()
 
-@app.route("/red")
-def showRed():
-    return render_template("redlocal.html", titulo = "Diseno Red") 
+    query = ("select * from {} order by Time desc limit 1".format("Item" + str(Sensor)))
+
+    cursor.execute(query)
+
+    when = now = 0
+    for (momento, valor ) in cursor:
+        when = momento
+        now = valor
+
+    cursor.close()
+    cnx.close()
+    return (momento, valor)
 
 def updateTemps():
     Temperaturas['despacho'] = getTemp(Despacho) if Despacho != -1 else -99
@@ -57,12 +77,33 @@ def updateTemps():
     Temperaturas['buhardilla'] = getTemp(Buhardilla) if Buhardilla != -1 else -99
     Temperaturas['exterior'] = getTemp(Exterior) if Exterior != -1 else -99
 
+@app.route("/temperatura")
+def temp():
+    updateTemps()
+    return render_template("temperatura.html", titulo = "Temperatura-1", 
+                            temperatura = Temperaturas) 
+
+@app.route("/red")
+def showRed():
+    return render_template("redlocal.html", titulo = "Diseno Red") 
+
+@app.route("/raspberry")
+def showRaspBerry():
+    sondaTemperaturas['RaspTemp1']['Valores'] = getTempEx(sondaTemperaturas['RaspTemp1']['Sonda'])
+
+    sondaTemperaturas['RaspTemp2']['Valores'] = getTempEx(sondaTemperaturas['RaspTemp2']['Sonda'])
+
+    return render_template("raspberry.html", titulo = "Diseno RaspBerry PI",
+                            temperatura = sondaTemperaturas) 
+
+
 #
 # Comienzo
 #
 
 try:
-    cnx = mysql.connector.connect(user="openhabSQL", password="", host="192.168.24.5", database = "openhab2")
+#    cnx = mysql.connector.connect(user="openhabSQL", password="", host="192.168.24.5", database = "openhab2")
+    cnx = mysql.connector.connect(option_files="myopc.cnf")
 except mysql.connector.Error as err:
     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
        print("Something is wrong with your user name or password")
@@ -70,6 +111,12 @@ except mysql.connector.Error as err:
         print("Database does not exist")
     else:
         print(err)
+
+sondaTemperaturas['RaspTemp1'] = {}
+sondaTemperaturas['RaspTemp1']['Sonda'] = -1
+
+sondaTemperaturas['RaspTemp2'] = {}
+sondaTemperaturas['RaspTemp2']['Sonda'] = -1
 
 cursor = cnx.cursor()
 
@@ -86,6 +133,11 @@ for (itemId, itemName ) in cursor:
         Buhardilla = itemId
     if itemName == "Temperatura":
         Exterior = itemId
+    if itemName == "RaspTemp1":
+        sondaTemperaturas['RaspTemp1']['Sonda'] = itemId
+    if itemName == "RaspTemp2":
+        sondaTemperaturas['RaspTemp2']['Sonda'] = itemId
+
 
 cursor.close()
 
