@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from flask import Flask, render_template
 import mysql.connector
 import datetime
@@ -85,7 +87,7 @@ def temp():
 
 @app.route("/red")
 def showRed():
-    return render_template("redlocal.html", titulo = "Diseno Red") 
+    return render_template("redlocal.html", titulo = "Diseño Red") 
 
 @app.route("/raspberry")
 def showRaspBerry():
