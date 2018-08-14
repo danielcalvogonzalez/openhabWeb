@@ -91,6 +91,9 @@ def showRaspBerry():
     return render_template("raspberry.html", titulo = "Diseno RaspBerry PI",
                             temperatura = sondaTemp) 
 
+@app.route("/")
+def principal():
+    return render_template("index.html")
 
 #
 # Comienzo

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+            <div class="temperatura">
+                <p class="titulo1">Temperatura interna</p>
+                    <div class="tempGauges">
+
+                        <div class="column11">
+			{% if temperatura.sotano > 26 %}
+                        	<div class="circle_container_hot">
+			{% elif temperatura.sotano > 15 %}
+                        	<div class="circle_container">
+			{% else %}
+                        	<div class="circle_container_cold">
+			{% endif %}
+				<span>{{ temperatura.sotano }}&deg;</span>
+                        </div>
+                            <p></p>
+                            <p class="tempGaugeTitle">Sotano</p>
+                        </div>
+
+                        <div class="column12">
+			{% if temperatura.despacho > 26 %}
+                        	<div class="circle_container_hot">
+			{% elif temperatura.despacho > 15 %}
+                        	<div class="circle_container">
+			{% else %}
+                        	<div class="circle_container_cold">
+			{% endif %}
+				<span>{{ temperatura.despacho }}&deg;</span>
+                        </div>
+                            <p></p>
+                            <p class="tempGaugeTitle">Despacho</p>
+                        </div>
+
+                        <div class="column13">
+			{% if temperatura.buhardilla > 26 %}
+                        	<div class="circle_container_hot">
+			{% elif temperatura.buhardilla > 15 %}
+                        	<div class="circle_container">
+			{% else %}
+                        	<div class="circle_container_cold">
+			{% endif %}
+				<span>{{ temperatura.buhardilla }}&deg;</span>
+                        </div>
+                            <p></p>
+                            <p class="tempGaugeTitle">Buhardilla</p>
+                        </div>
+                    </div>
+
+
+                <p>hola</p>
+                <p>hola</p>
+                <p>hola</p>
+                <p>hola</p>
+            </div>
+            
+            
+            <div class="temperatura">
+                <p class="titulo1">Temperatura externa</p>
+                <p>hola</p>
+                <p>hola</p>
+                <p>hola</p>
+                <p>hola1</p>
+            </div>
+            <p class="titulo1">Gráficos</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola2</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola3</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola4</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola5</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola</p>
+            <p>hola6</p>
+            <p>hola</p>
+{% endblock %}
