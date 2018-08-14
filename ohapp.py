@@ -1,23 +1,22 @@
 # coding=utf-8
 
 from flask import Flask, render_template
+from mysql.connector import errorcode
 import mysql.connector
 import datetime
 
-from mysql.connector import errorcode
-
-Despacho    = -1
-Buhardilla  = -1
-Sotano      = -1
-Exterior    = -1
-Temperaturas = {}
-sondaTemperaturas = {}
+sondaTemp = {'Temperatura': {},
+             'DespachoTemp': {},
+             'BuhardillaTemp': {},
+             'SotanoTemp': {},
+             'RaspTemp1': {},
+             'RaspTemp2': {}
+            }
 
 app = Flask(__name__)
 
 def getTemp(Sensor):
     try:
-#        cnx = mysql.connector.connect(user="openhabSQL", password="", host="192.168.24.5", database = "openhab2")
         cnx = mysql.connector.connect(option_files="myopc.cnf")
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -29,14 +28,12 @@ def getTemp(Sensor):
 
     cursor = cnx.cursor()
 
-    query = ("select * from {} order by Time desc limit 1".format("Item" + str(Sensor)))
+    query = ("select * from %s order by Time desc limit 1")
 
-    cursor.execute(query)
+    cursor.execute(query, (Sensor, ))
 
     when = now = 0
     for (momento, valor ) in cursor:
-#        print("** {} {} ".format(momento, valor))
-#        print("Tipo {} y {}".format(type(momento), type(valor)))
         when = momento
         now = valor
 
@@ -45,7 +42,7 @@ def getTemp(Sensor):
     return valor
 
 def getTempEx(Sensor):
-    if Sensor == -1:
+    if 'ID' not in Sensor:
         return (datetime.datetime.now(), -99)
 
     try:
@@ -60,7 +57,7 @@ def getTempEx(Sensor):
 
     cursor = cnx.cursor()
 
-    query = ("select * from {} order by Time desc limit 1".format("Item" + str(Sensor)))
+    query = ("select * from " + Sensor['ID'] + " order by Time desc limit 1")
 
     cursor.execute(query)
 
@@ -74,16 +71,14 @@ def getTempEx(Sensor):
     return (momento, valor)
 
 def updateTemps():
-    Temperaturas['despacho'] = getTemp(Despacho) if Despacho != -1 else -99
-    Temperaturas['sotano'] = getTemp(Sotano) if Sotano != -1 else -99
-    Temperaturas['buhardilla'] = getTemp(Buhardilla) if Buhardilla != -1 else -99
-    Temperaturas['exterior'] = getTemp(Exterior) if Exterior != -1 else -99
+    for objeto in sondaTemp:
+        sondaTemp[objeto]['Data'] = getTempEx(sondaTemp[objeto])
 
 @app.route("/temperatura")
 def temp():
     updateTemps()
     return render_template("temperatura.html", titulo = "Temperatura-1", 
-                            temperatura = Temperaturas) 
+                            temperatura = sondaTemp) 
 
 @app.route("/red")
 def showRed():
@@ -91,12 +86,10 @@ def showRed():
 
 @app.route("/raspberry")
 def showRaspBerry():
-    sondaTemperaturas['RaspTemp1']['Valores'] = getTempEx(sondaTemperaturas['RaspTemp1']['Sonda'])
-
-    sondaTemperaturas['RaspTemp2']['Valores'] = getTempEx(sondaTemperaturas['RaspTemp2']['Sonda'])
+    updateTemps()
 
     return render_template("raspberry.html", titulo = "Diseno RaspBerry PI",
-                            temperatura = sondaTemperaturas) 
+                            temperatura = sondaTemp) 
 
 
 #
@@ -104,7 +97,6 @@ def showRaspBerry():
 #
 
 try:
-#    cnx = mysql.connector.connect(user="openhabSQL", password="", host="192.168.24.5", database = "openhab2")
     cnx = mysql.connector.connect(option_files="myopc.cnf")
 except mysql.connector.Error as err:
     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -114,56 +106,20 @@ except mysql.connector.Error as err:
     else:
         print(err)
 
-sondaTemperaturas['RaspTemp1'] = {}
-sondaTemperaturas['RaspTemp1']['Sonda'] = -1
-
-sondaTemperaturas['RaspTemp2'] = {}
-sondaTemperaturas['RaspTemp2']['Sonda'] = -1
-
 cursor = cnx.cursor()
 
-query = ("SELECT * from Items")
+query = ("SELECT * from Items where ItemName = %s")
 
-cursor.execute(query)
+for objeto in sondaTemp:
+    cursor.execute(query, (objeto, ))
 
-for (itemId, itemName ) in cursor:
-    if itemName == "DespachoTemp":
-        Despacho = itemId
-    if itemName == "SotanoTemp":
-        Sotano = itemId
-    if itemName == "BuhardillaTemp":
-        Buhardilla = itemId
-    if itemName == "Temperatura":
-        Exterior = itemId
-    if itemName == "RaspTemp1":
-        sondaTemperaturas['RaspTemp1']['Sonda'] = itemId
-    if itemName == "RaspTemp2":
-        sondaTemperaturas['RaspTemp2']['Sonda'] = itemId
-
+    for (itemId, itemName ) in cursor:
+        sondaTemp[objeto]['ID'] = 'Item' + str(itemId)
 
 cursor.close()
 
-if Despacho != -1:
-    Temperaturas['despacho'] = getTemp(Despacho)
-if Sotano != -1:
-    Temperaturas['sotano'] = getTemp(Sotano)
-if Buhardilla != -1:
-    Temperaturas['buhardilla'] = getTemp(Buhardilla)
-if Exterior != -1:
-    Temperaturas['exterior'] = getTemp(Exterior)
-
-"""
-print("Despacho {}".format(Despacho))
-print("Sotano   {}".format(Sotano))
-print("Buhardil {}".format(Buhardilla))
-
-print("Tipo {}", type(Despacho))
-"""
-
-print(Temperaturas)
-
+cnx.close()
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
 
-cnx.close()
