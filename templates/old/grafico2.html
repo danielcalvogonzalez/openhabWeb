@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+  <head>
+    <meta charset="utf-8">
+    <title>Página myopenHAB</title>
+<!--
+/*    <link rel="stylesheet" href="static/css/ohapp.css"> */
+-->
+    <script src="static/js/plotly-latest.min.js"></script>
+  </head>
+  
+  <body>
+    
+    Párrafo en el body ORANGE1
+    
+    <div class="principal">
+        Párrafo en el main GREEN
+        <div class="cabecera">
+        
+        Párrafo en el header BLUE
+        <img src="static/images/menu.svg" width="20" height="20" alt="Icono del Menú"/>
+        Página Principal
+        OpenHAB
+        
+        </div>
+        
+       
+        <!-- page content -->
+        <p>Párrafo con P. Esta es la primera linea del texto que debo emplear para comprobar el funcionamiento
+        del parametro indenting en los textos que se emplean en una pagina web</p>
+        <p>Párrafo con P. Ahora tenemos otro parrafo para probar el interlineado entre parrafos</p>
+        Ahora SIN P en el MAIN
+    </div>
+    
+    Plotly.d3.csv("https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv", 
+    
+    <div id="tester" style="width:800px;height:300px;"></div>
+
+    <script>
+	
+    TESTER = document.getElementById('tester');
+        
+    Plotly.d3.csv("http://192.168.24.5:5000/static/csv/data.csv", 
+                  function(err, rows){
+                    function unpack(rows, key) {
+                        return rows.map(function(row) { return row[key]; });
+                    }
+
+
+            var trace1 = {
+              type: "scatter",
+              mode: "lines",
+              name: 'Temperatura',
+              x: unpack(rows, 'Fecha'),
+              y: unpack(rows, 'Valor'),
+              line: {color: '#17BECF'}
+            }
+
+            var trace2 = {
+              type: "scatter",
+              mode: "lines",
+              name: 'AAPL Low',
+              x: unpack(rows, 'Date'),
+              y: unpack(rows, 'AAPL.Low'),
+              line: {color: '#7F7F7F'}
+            }
+
+        var data = [trace1,trace2];
+
+        var layout = {
+          title: 'Time Series with Rangeslider',
+          xaxis: {
+            autorange: true,
+            range: ['2018-01-01', '2018-08-21'],
+            rangeselector: {buttons: [
+                {
+                  count: 1,
+                  label: '1m',
+                  step: 'month',
+                  stepmode: 'backward'
+                },
+                {
+                  count: 6,
+                  label: '6m',
+                  step: 'month',
+                  stepmode: 'backward'
+                },
+                {step: 'all'}
+              ]},
+            rangeslider: {range: ['2018-01-01', '2018-08-21']},
+            type: 'date'
+          },
+          yaxis: {
+            autorange: true,
+            range: [0.000, 40.000],
+            type: 'linear'
+          }
+        };
+
+        Plotly.plot(TESTER, data, layout);
+        })
+    </script>
+
+    
+  </body>
+  
+</html>

@@ -4,6 +4,7 @@ from flask import Flask, render_template
 from mysql.connector import errorcode
 import mysql.connector
 import datetime
+import sys
 
 sondaTemp = {'Temperatura': {},
              'DespachoTemp': {},
@@ -82,7 +83,7 @@ def temp():
 
 @app.route("/red")
 def showRed():
-    return render_template("redlocal.html", titulo = "Diseño Red") 
+    return render_template("redlocal.html", titulo = "Diseno Red") 
 
 @app.route("/raspberry")
 def showRaspBerry():
@@ -91,9 +92,17 @@ def showRaspBerry():
     return render_template("raspberry.html", titulo = "Diseno RaspBerry PI",
                             temperatura = sondaTemp) 
 
+@app.route("/grafico1")
+def graf1():
+    return render_template("grafico1.html")
+
+@app.route("/grafico2")
+def graf2():
+    return render_template("grafico2.html")
+
 @app.route("/")
 def principal():
-    return render_template("index.html")
+    return render_template("index.html", titulo = "Pagina Principal")
 
 #
 # Comienzo
@@ -111,18 +120,23 @@ except mysql.connector.Error as err:
 
 cursor = cnx.cursor()
 
-query = ("SELECT * from Items where ItemName = %s")
+query = ("SELECT * from Items")
 
-for objeto in sondaTemp:
-    cursor.execute(query, (objeto, ))
+cursor.execute(query)
 
-    for (itemId, itemName ) in cursor:
-        sondaTemp[objeto]['ID'] = 'Item' + str(itemId)
+for (Id, Name) in cursor:
+	if Name in sondaTemp:
+		sondaTemp[Name]['ID'] = 'Item' + str(Id)
 
 cursor.close()
 
 cnx.close()
 
+if len(sys.argv) == 2:
+    opt_debug = True
+else:
+    opt_debug = False
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug = opt_debug)
 

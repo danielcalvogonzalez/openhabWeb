@@ -1,20 +1,34 @@
-.temperature-container {
-    width: 300px;
-    height: 300px;
-    background: #FFFFFF;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #EFEFEF;
+.column11 {
+    padding: 2px;
+    margin-right: 5px;
+    width: 100px;
+    float: left;
+    position: relative;
+    left: 10%;
 }
 
-.temp-title {
-    color: #72778e;
-    font-size: 16px;
+.column12 {
+    padding:2px;
+    margin-right:5px;
+    width:100px;
+    float: left;
+    left: 42%;
+    position: relative;
+}
+
+.column13 {
+    padding:2px;
+    margin-right:5px;
+    width:100px;
+    position: relative;
+    float: left;
+    left: 74%;
 }
 
 .circle_container {
-    width: 90px;
-    height: 90px;
+    margin: 0 auto;
+    width: 80px;
+    height: 80px;
     border-radius: 42px;
     border: 3px solid #fff;
     font-family: Cambria;
@@ -24,12 +38,11 @@
     text-align: center;
     background: #266c30;
     box-shadow: 0 0 0 3px #266c30;
-    margin: 30px auto;
 }
 
 .circle_container_cold {
-    width: 90px;
-    height: 90px;
+    width: 80px;
+    height: 80px;
     border-radius: 42px;
     border: 3px solid #fff;
     font-family: Cambria;
@@ -39,12 +52,11 @@
     text-align: center;
     background: #390bc4;
     box-shadow: 0 0 0 3px #390bc4;
-    margin: 30px auto;
 }
 
 .circle_container_hot {
-    width: 90px;
-    height: 90px;
+    width: 80px;
+    height: 80px;
     border-radius: 42px;
     border: 3px solid #fff;
     font-family: Cambria;
@@ -54,5 +66,10 @@
     text-align: center;
     background: #ed0000;
     box-shadow: 0 0 0 3px #ed0000;
-    margin: 30px auto;
+}
+
+.tempGaugeTitle {
+    text-align: center;
+    color: white;
+    margin-top: 10px;
 }

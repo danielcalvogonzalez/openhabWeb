@@ -1,11 +1,64 @@
 {% extends "base.html" %}
 {% block contenido %}
 
-	{{ temperatura }}
+	<div class="contenido">
+		<h3>Temperatura Interior</h3>
+		<div class="contenedor-1-3">
+			<h6>Despacho</h6>
+			{% if temperatura.DespachoTemp.Data[1] > 25 %}
+				<div class="circle_container_hot">
+			{% elif temperatura.DespachoTemp.Data[1] > 10 %}
+				<div class="circle_container">
+			{% else %}
+				<div class="circle_container_cold">
+			{% endif %}
+			{{ temperatura.DespachoTemp.Data[1] }}&deg
+			</div>
+		</div>
+		<div class="contenedor-2-3">
+			<h6>Buhardilla</h6>
+			{% if temperatura.BuhardillaTemp.Data[1] > 25 %}
+				<div class="circle_container_hot">
+			{% elif temperatura.BuhardillaTemp.Data[1] > 10 %}
+				<div class="circle_container">
+			{% else %}
+				<div class="circle_container_cold">
+			{% endif %}
+			{{ temperatura.BuhardillaTemp.Data[1] }}&deg
+			</div>
+		</div>
+		<div class="contenedor-3-3">
+			<h6>Sotano</h6>
+			{% if temperatura.SotanoTemp.Data[1] > 25 %}
+				<div class="circle_container_hot">
+			{% elif temperatura.SotanoTemp.Data[1] > 10 %}
+				<div class="circle_container">
+			{% else %}
+				<div class="circle_container_cold">
+			{% endif %}
+			{{ temperatura.SotanoTemp.Data[1] }}&deg
+			</div>
+		</div>
+
+		<h3>Temperatura Exterior</h3>
+		<div class="contenedor-1-2">
+			<h6>Villanueva</h6>
+			{% if temperatura.Temperatura.Data[1] > 25 %}
+				<div class="circle_container_hot">
+			{% elif temperatura.Temperatura.Data[1] > 10 %}
+				<div class="circle_container">
+			{% else %}
+				<div class="circle_container_cold">
+			{% endif %}
+			{{ temperatura.Temperatura.Data[1] }}&deg
+				</div>
+		</div>
+
 	<div class="temperatura">
 
 	  <p class="titulo1">Temperatura interior</p>
 	  <div class="tempGauges">
+
 		  <p>Dentro</p>
 	  </div>
 
@@ -16,6 +69,8 @@
 		<p class="titulo1">Temperatura exterior</p>
 
 	</div>
+	<p><p>
+	{{ temperatura }}
 
 
 {% endblock %}
