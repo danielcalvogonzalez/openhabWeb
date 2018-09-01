@@ -106,6 +106,7 @@ main {
     left: 60px;
     padding: 20px;
     background: #F9FAFB;
+    width: calc(100% - 50px);
 }
 
 .main-move {

@@ -14,6 +14,11 @@ sondaTemp = {'Temperatura': {},
              'RaspTemp2': {}
             }
 
+sondaHumedad = {'DespachoHumedad': {},
+                'BuhardillaHumedad': {},
+                'SotanoHumedad': {}
+               }
+
 app = Flask(__name__)
 
 def getTemp(Sensor):
@@ -71,15 +76,51 @@ def getTempEx(Sensor):
     cnx.close()
     return (momento, valor)
 
+def getHumedadEx(Sensor):
+    if 'ID' not in Sensor:
+        return (datetime.datetime.now(), -99)
+
+    try:
+        cnx = mysql.connector.connect(option_files="myopc.cnf")
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+         print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist")
+        else:
+            print(err)
+
+    cursor = cnx.cursor()
+
+    query = ("select * from " + Sensor['ID'] + " order by Time desc limit 1")
+
+    cursor.execute(query)
+
+    when = now = 0
+    for (momento, valor ) in cursor:
+        when = momento
+        now = valor
+
+    cursor.close()
+    cnx.close()
+    return (momento, valor)
+
 def updateTemps():
     for objeto in sondaTemp:
         sondaTemp[objeto]['Data'] = getTempEx(sondaTemp[objeto])
+        sondaTemp[objeto]['Fecha'] = sondaTemp[objeto]['Data'][0].strftime("%d/%m/%Y %H:%M:%S")
+
+def updateHumedad():
+    for objeto in sondaHumedad:
+        sondaHumedad[objeto]['Data'] = getHumedadEx(sondaHumedad[objeto])
+        sondaHumedad[objeto]['Fecha'] = sondaHumedad[objeto]['Data'][0].strftime("%d/%m/%Y %H:%M:%S")
 
 @app.route("/temperatura")
 def temp():
     updateTemps()
+    updateHumedad()
     return render_template("temperatura.html", titulo = "Temperatura-1", 
-                            temperatura = sondaTemp) 
+                            temperatura = sondaTemp, humedad = sondaHumedad) 
 
 @app.route("/red")
 def showRed():
@@ -127,6 +168,8 @@ cursor.execute(query)
 for (Id, Name) in cursor:
 	if Name in sondaTemp:
 		sondaTemp[Name]['ID'] = 'Item' + str(Id)
+        if Name in sondaHumedad:
+                sondaHumedad[Name]['ID'] = 'Item' + str(Id)
 
 cursor.close()
 
