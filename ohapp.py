@@ -119,7 +119,7 @@ def updateHumedad():
 def temp():
     updateTemps()
     updateHumedad()
-    return render_template("temperatura.html", titulo = "Temperatura-1", 
+    return render_template("temperatura.html", titulo = "Temperatura", 
                             temperatura = sondaTemp, humedad = sondaHumedad) 
 
 @app.route("/red")
@@ -133,13 +133,9 @@ def showRaspBerry():
     return render_template("raspberry.html", titulo = "Diseno RaspBerry PI",
                             temperatura = sondaTemp) 
 
-@app.route("/grafico1")
-def graf1():
-    return render_template("grafico1.html")
-
-@app.route("/grafico2")
-def graf2():
-    return render_template("grafico2.html")
+@app.route("/exterior")
+def exterior():
+    return render_template("exterior.html", titulo = "Exterior") 
 
 @app.route("/")
 def principal():
@@ -183,3 +179,6 @@ else:
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug = opt_debug)
 
+"""
+https://www.digitalocean.com/community/tutorials/how-to-set-up-basic-http-authentication-with-nginx-on-ubuntu-14-04
+"""
