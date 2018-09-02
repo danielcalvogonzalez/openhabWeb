@@ -49,6 +49,24 @@
 				{{ temperatura.SotanoTemp.Fecha }}
 			</h6>
 		</div>
+                    <p>
+                    </p>
+                    
+        <div class="contenedor-3-1">
+			<h5>Garaje</h5>
+			{% if temperatura.GarajeTemp.Data[1] > 25 %}
+				<div class="circle_container_hot">
+			{% elif temperatura.GarajeTemp.Data[1] > 10 %}
+				<div class="circle_container">
+			{% else %}
+				<div class="circle_container_cold">
+			{% endif %}
+			{{ temperatura.GarajeTemp.Data[1] }}&deg
+			</div>
+			<h6>
+				{{ temperatura.GarajeTemp.Fecha }}
+			</h6>
+		</div>
 
 		<h3>Temperatura Exterior</h3>
 		<div class="contenedor-2-1">
@@ -185,24 +203,51 @@
 			</div>
 			</div>
 		</div>
+                    <p></p>
+        <div class="contenedor-3-1">
+			<h5>Garaje</h5>
+		        <div style="text-align: center;">
+			<canvas data-type="radial-gauge"
+			        data-width="140"
+			        data-height="140"
+			        data-units="%"
+			        data-title="false"
+			        data-value="{{ humedad['GarajeHumedad']['Data'][1] }}"
+			        data-min-value="0"
+			        data-max-value="100"
+			        data-major-ticks="0,20,40,60,80,100"
+			        data-minor-ticks="4"
+			        data-stroke-ticks="false"
+			        data-highlights='[
+			            { "from": 0, "to": 19, "color": "rgba(0,0,255,.35)" },
+			            { "from": 20, "to": 75, "color": "rgba(0,255,0,.35)" },
+			            { "from": 76, "to": 100, "color": "rgba(255,0,0,.25)" }
+		              
+				]'
+			        data-font-numbers-size="28"
+			        data-color-plate="#222"
+			        data-color-major-ticks="#f5f5f5"
+			        data-color-minor-ticks="#ddd"
+			        data-color-title="#fff"
+			        data-color-units="#ccc"
+			        data-color-numbers="#eee"
+			        data-color-needle-start="rgba(240, 128, 128, 1)"
+			        data-color-needle-end="rgba(255, 160, 122, .9)"
+			        data-value-box="false"
+			        data-animation-rule="bounce"
+			        data-animation-duration="500"
+			        data-font-value="Led"
+			        data-animated-value="true">
+			 </canvas>
+			 <div class="etiqueta">
+			 	{{ humedad['GarajeHumedad']['Data'][1] }}%
+			</div>
+			</div>
+		</div>            
 	</div>
 
-	<div class="temperatura">
+	<p></p>
 
-	  <p class="titulo1">Temperatura interior</p>
-	  <div class="tempGauges">
-
-		  <p>Dentro</p>
-	  </div>
-
-	</div>
-
-	<div class="temperatura">
-
-		<p class="titulo1">Temperatura exterior</p>
-
-	</div>
-
-	960 pixels para tres columnas
+	<p>960 pixels para tres columnas</p>
 
 {% endblock %}

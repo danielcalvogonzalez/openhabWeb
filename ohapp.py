@@ -10,13 +10,15 @@ sondaTemp = {'Temperatura': {},
              'DespachoTemp': {},
              'BuhardillaTemp': {},
              'SotanoTemp': {},
+             'GarajeTemp': {},
              'RaspTemp1': {},
              'RaspTemp2': {}
             }
 
 sondaHumedad = {'DespachoHumedad': {},
                 'BuhardillaHumedad': {},
-                'SotanoHumedad': {}
+                'SotanoHumedad': {},
+                'GarajeHumedad': {}
                }
 
 app = Flask(__name__)
