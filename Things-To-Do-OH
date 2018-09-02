@@ -1,0 +1,7 @@
+Copiar toda la configuracion de openhab
+Copiar la configuracion de NGINX
+Copiar la confgiuracion de UWSGI
+Conseguir que arranque como servicio
+Copiar la configuracion de DHCP
+Copiar script arranque DHCP que espera a tener red local
+

@@ -4,7 +4,8 @@
 
 	<div class="contenido">
 		<h3>Temperatura Interior</h3>
-		<div class="contenedor-3-1">
+		<div class="fila">
+		<div class="col1">
 			<h5>Despacho</h5>
 			{% if temperatura.DespachoTemp.Data[1] > 25 %}
 				<div class="circle_container_hot">
@@ -15,11 +16,17 @@
 			{% endif %}
 			{{ temperatura.DespachoTemp.Data[1] }}&deg
 			</div>
+            {% if temperatura.DespachoTemp.Updated == "ON" %}
+			    <div class="ON"></div>
+            {% else %}
+			    <div class="OFF"></div>
+			{% endif %}
+
 			<h6>
 				{{ temperatura.DespachoTemp.Fecha }}
 			</h6>
 		</div>
-		<div class="contenedor-3-2">
+		<div class="col1">
 			<h5>Buhardilla</h5>
 			{% if temperatura.BuhardillaTemp.Data[1] > 25 %}
 				<div class="circle_container_hot">
@@ -34,7 +41,7 @@
 				{{ temperatura.BuhardillaTemp.Fecha }}
 			</h6>
 		</div>
-		<div class="contenedor-3-3">
+		<div class="col1">
 			<h5>Sotano</h5>
 			{% if temperatura.SotanoTemp.Data[1] > 25 %}
 				<div class="circle_container_hot">
@@ -49,10 +56,12 @@
 				{{ temperatura.SotanoTemp.Fecha }}
 			</h6>
 		</div>
-                    <p>
-                    </p>
-                    
-        <div class="contenedor-3-1">
+        </div>
+        
+        <div class="fila"> 
+        <div class="col1 vacia">
+        </div>
+        <div class="col1">
 			<h5>Garaje</h5>
 			{% if temperatura.GarajeTemp.Data[1] > 25 %}
 				<div class="circle_container_hot">
@@ -67,9 +76,17 @@
 				{{ temperatura.GarajeTemp.Fecha }}
 			</h6>
 		</div>
+        <div class="col1 vacia">
+        </div>
 
+        </div>
+        
 		<h3>Temperatura Exterior</h3>
-		<div class="contenedor-2-1">
+		<div class="fila">
+		<div class="col1 vacia">
+		    
+		</div>
+		<div class="col1">
 			<h5>Villanueva</h5>
 			{% if temperatura.Temperatura.Data[1] > 25 %}
 				<div class="circle_container_hot">
@@ -79,14 +96,19 @@
 				<div class="circle_container_cold">
 			{% endif %}
 			{{ temperatura.Temperatura.Data[1] }}&deg
-				</div>
-		</div>
+            </div>
+        </div>
+        <div class="col1 vacia">
+        </div>
+        </div>
 
 		<h3>Humedad Interior</h3>
-		<div class="contenedor-3-1">
+		
+		<div class="fila">
+		    <div class="col1">
 			<h5>Despacho</h5>
 		        <div style="text-align: center;">
-			<canvas data-type="radial-gauge"
+			        <canvas data-type="radial-gauge"
 			        data-width="140"
 			        data-height="140"
 			        data-units="%"
@@ -102,7 +124,7 @@
 			            { "from": 20, "to": 75, "color": "rgba(0,255,0,.35)" },
 			            { "from": 76, "to": 100, "color": "rgba(255,0,0,.25)" }
 		              
-				]'
+				    ]'
 			        data-font-numbers-size="28"
 			        data-color-plate="#222"
 			        data-color-major-ticks="#f5f5f5"
@@ -117,16 +139,16 @@
 			        data-animation-duration="500"
 			        data-font-value="Led"
 			        data-animated-value="true">
-			 </canvas>
-			 <div class="etiqueta">
-			 	{{ humedad['DespachoHumedad']['Data'][1] }}%
-			</div>
-			</div>
-		</div>
-		<div class="contenedor-3-2">
+			        </canvas>
+			        <div class="etiqueta">
+			 	        {{ humedad['DespachoHumedad']['Data'][1] }}%
+			        </div>
+			    </div>
+		    </div>
+		    <div class="col1">
 			<h5>Buhardilla</h5>
 		        <div style="text-align: center;">
-			<canvas data-type="radial-gauge"
+			        <canvas data-type="radial-gauge"
 			        data-width="140"
 			        data-height="140"
 			        data-units="ºC"
@@ -142,7 +164,7 @@
 			            { "from": 20, "to": 75, "color": "rgba(0,255,0,.35)" },
 			            { "from": 76, "to": 100, "color": "rgba(255,0,0,.25)" }
 		              
-				]'
+				    ]'
 			        data-font-numbers-size="28"
 			        data-color-plate="#222"
 			        data-color-major-ticks="#f5f5f5"
@@ -157,16 +179,16 @@
 			        data-animation-duration="500"
 			        data-font-value="Led"
 			        data-animated-value="true">
-			 </canvas>
-			 <div class="etiqueta">
-			 	{{ humedad['BuhardillaHumedad']['Data'][1] }}%
-			</div>
-			</div>
-		</div>
-		<div class="contenedor-3-3">
+			        </canvas>
+			        <div class="etiqueta">
+			 	        {{ humedad['BuhardillaHumedad']['Data'][1] }}%
+			        </div>
+			    </div>
+		    </div>
+		    <div class="col1">
 			<h5>Sotano</h5>
 		        <div style="text-align: center;">
-			<canvas data-type="radial-gauge"
+			        <canvas data-type="radial-gauge"
 			        data-width="140"
 			        data-height="140"
 			        data-units="ºC"
@@ -182,7 +204,7 @@
 			            { "from": 20, "to": 75, "color": "rgba(0,255,0,.35)" },
 			            { "from": 76, "to": 100, "color": "rgba(255,0,0,.25)" }
 		              
-				]'
+				    ]'
 			        data-font-numbers-size="28"
 			        data-color-plate="#222"
 			        data-color-major-ticks="#f5f5f5"
@@ -197,17 +219,22 @@
 			        data-animation-duration="500"
 			        data-font-value="Led"
 			        data-animated-value="true">
-			 </canvas>
-			 <div class="etiqueta">
-			 	{{ humedad['SotanoHumedad']['Data'][1] }}%
-			</div>
-			</div>
-		</div>
-                    <p></p>
-        <div class="contenedor-3-1">
+			        </canvas>
+			        <div class="etiqueta">
+			 	        {{ humedad['SotanoHumedad']['Data'][1] }}%
+			        </div>
+			    </div>
+		    </div>
+        </div>
+        
+        <div class="fila">
+            <div class="col1 vacia">
+                
+            </div>
+            <div class="col1">
 			<h5>Garaje</h5>
 		        <div style="text-align: center;">
-			<canvas data-type="radial-gauge"
+			        <canvas data-type="radial-gauge"
 			        data-width="140"
 			        data-height="140"
 			        data-units="%"
@@ -223,7 +250,7 @@
 			            { "from": 20, "to": 75, "color": "rgba(0,255,0,.35)" },
 			            { "from": 76, "to": 100, "color": "rgba(255,0,0,.25)" }
 		              
-				]'
+				    ]'
 			        data-font-numbers-size="28"
 			        data-color-plate="#222"
 			        data-color-major-ticks="#f5f5f5"
@@ -238,15 +265,18 @@
 			        data-animation-duration="500"
 			        data-font-value="Led"
 			        data-animated-value="true">
-			 </canvas>
-			 <div class="etiqueta">
-			 	{{ humedad['GarajeHumedad']['Data'][1] }}%
-			</div>
-			</div>
-		</div>            
-	</div>
+			        </canvas>
+			        <div class="etiqueta">
+			 	        {{ humedad['GarajeHumedad']['Data'][1] }}%
+			        </div>
+			    </div>
+		    </div>
+		    <div class="col1 vacia">
+		        
+		    </div>
+	    </div>
+    </div>
 
-	<p></p>
 
 	<p>960 pixels para tres columnas</p>
 

@@ -106,6 +106,7 @@ main {
     padding: 20px;
     background: #F9FAFB;
     width: calc(100% - 60px);
+    min-height: calc(100% - 50px); /* IMPORTANTE */
 }
 
 .main-move {

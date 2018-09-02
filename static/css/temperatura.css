@@ -56,3 +56,42 @@
     box-shadow: 0 0 0 3px #ed0000;
     margin: 30px auto;
 }
+
+.OFF {
+    width: 12px;
+    height: 12px;
+    border-radius: 42px;
+    border: 3px solid #fff;
+    font-family: Cambria;
+    font-size: 24px;
+    color: white;
+    line-height: 80px;
+    text-align: left;
+    background: red;
+    margin: 20px auto;
+    color: red;
+    display: inline-block;
+    animation: blinker 1s linear infinite;
+}
+
+.ON {
+    width: 12px;
+    height: 12px;
+    border-radius: 42px;
+    border: 3px solid #fff;
+    font-family: Cambria;
+    font-size: 24px;
+    color: white;
+    line-height: 80px;
+    text-align: left;
+    background: green;
+    margin: 20px auto;
+    color: green;
+    display: inline-block;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}

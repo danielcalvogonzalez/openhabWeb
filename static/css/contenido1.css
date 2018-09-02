@@ -1,0 +1,123 @@
+.contenido {
+    background: #f9fafb;
+    color: #828789;
+    text-align: center;
+    width: 90%;
+    min-height: calc(100% - 50px); /* IMPORTANTE */
+    font-family: Roboto,-apple-system,system-ui,BlinkMacSystemFont,Segoe UI,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Arial,sans-serif;    
+}
+
+.fila::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.contenedor-3-1 {
+    float: left;
+    margin: 15px 30px 10px 30px;
+    display: inline-block;
+}
+
+.contenedor-3-2 {
+    display: inline-block;
+    margin: 15px auto 10px;
+}
+
+.contenedor-3-3 {
+    float: right;
+    margin: 15px 30px 10px 30px;
+}
+
+.contenedor-2-1 {
+    margin: 15px 50px 10px 50px;
+    /* float: left; */
+}
+
+.contenedor-2-2 {
+    margin: 15px 30px 10px 50px;
+    float: left;
+}
+
+[class^="contenedor-3"] {
+    width: 250px;
+    height: 250px;
+    text-align: left;
+}
+
+[class^="contenedor-2"] {
+    width: 250px;
+    height: 250px;
+    display: inline-block;
+    text-align: left;
+}
+
+[class^="contenedor-"] {
+    background: white;
+    border-style: solid;
+    border-color: #F3F3F3;
+}
+
+.col1 {
+    width: 30%;
+    max-width: 356px;
+}
+
+.col2 {
+    width: calc(60% + 20px);
+    max-width: 732px;
+}
+
+.col3 {
+    width: calc(90% + 40px);
+    max-width: 1108px;
+}
+
+[class^="col"] {
+    float: left;
+    margin: 10px;
+    height: 250px;
+    background: white;
+    border-style: solid;
+    border-color: #F3F3F3;
+}
+
+.vacia {
+    border-style: none;
+    background: #f9fafb;
+}
+.contenido h3 {
+    font-size: 32px;
+    text-align: center;
+    border-style: solid;
+    border-width: 0px 0px 2px 0px;
+    padding-bottom: 10px;
+}
+
+.contenido h5 {
+    font-size: 16px;
+    text-align: left;
+    margin: 20px;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    padding-bottom: 5px;
+}
+
+.contenido h6 {
+    font-size: 14px;
+    text-align: left;
+    padding-bottom: 5px;
+    margin-left: 20px;
+}
+
+.etiqueta {
+    width: 4em;
+    font-size: 18px;
+    background: #BABAB2;
+    color: #525251;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #8F8F89;
+    text-align: center;
+    margin: 0 auto;
+}

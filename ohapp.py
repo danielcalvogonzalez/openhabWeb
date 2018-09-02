@@ -6,6 +6,8 @@ import mysql.connector
 import datetime
 import sys
 
+UPDATE_INTERVAL = 20
+
 sondaTemp = {'Temperatura': {},
              'DespachoTemp': {},
              'BuhardillaTemp': {},
@@ -108,9 +110,16 @@ def getHumedadEx(Sensor):
     return (momento, valor)
 
 def updateTemps():
+    now = datetime.datetime.now()
     for objeto in sondaTemp:
         sondaTemp[objeto]['Data'] = getTempEx(sondaTemp[objeto])
         sondaTemp[objeto]['Fecha'] = sondaTemp[objeto]['Data'][0].strftime("%d/%m/%Y %H:%M:%S")
+        minutos = ((now - sondaTemp[objeto]['Data'][0]).seconds) / 60
+        if minutos >= UPDATE_INTERVAL:
+            sondaTemp[objeto]['Updated'] = 'OFF'
+        else:
+            sondaTemp[objeto]['Updated'] = 'ON'
+    
 
 def updateHumedad():
     for objeto in sondaHumedad:

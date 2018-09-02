@@ -4,10 +4,11 @@
 	<div class="contenido">
 
 		<h3>RaspBerry PI</h3>
-		<div class="contenedor-2-1">
-			<h6>RaspBerry PI-1</h6>
+		<div class="fila">
+		    <div class="col1">
+			    <h6>RaspBerry PI-1</h6>
 		        <div style="text-align: center;">
-			<canvas data-type="radial-gauge"
+			        <canvas data-type="radial-gauge"
 			        data-width="140"
 			        data-height="140"
 			        data-units="ºC"
@@ -23,7 +24,7 @@
 			            { "from": 50, "to": 59, "color": "rgba(0,255,0,.35)" },
 			            { "from": 59, "to": 90, "color": "rgba(255,0,0,.25)" }
 		              
-				]'
+				    ]'
 			        data-font-numbers-size="28"
 			        data-color-plate="#222"
 			        data-color-major-ticks="#f5f5f5"
@@ -38,16 +39,16 @@
 			        data-animation-duration="500"
 			        data-font-value="Led"
 			        data-animated-value="true">
-			 </canvas>
-			 <div class="etiqueta">
-			 	{{ temperatura['RaspTemp1']['Data'][1] }}&deg
-			 </div>
-			</div>
-		</div>
-		<div class="contenedor-2-1">
-			<h6>RaspBerry PI-2</h6>
+			        </canvas>
+			        <div class="etiqueta">
+			 	        {{ temperatura['RaspTemp1']['Data'][1] }}&deg
+			        </div>
+			    </div>
+		    </div>
+		    <div class="col1">
+			    <h6>RaspBerry PI-2</h6>
 		        <div style="text-align: center;">
-			<canvas data-type="radial-gauge"
+			        <canvas data-type="radial-gauge"
 			        data-width="140"
 			        data-height="140"
 			        data-units="ºC"
@@ -63,7 +64,7 @@
 			            { "from": 50, "to": 59, "color": "rgba(0,255,0,.35)" },
 			            { "from": 59, "to": 90, "color": "rgba(255,0,0,.25)" }
 		              
-				]'
+				    ]'
 			        data-font-numbers-size="28"
 			        data-color-plate="#222"
 			        data-color-major-ticks="#f5f5f5"
@@ -78,11 +79,12 @@
 			        data-animation-duration="500"
 			        data-font-value="Led"
 			        data-animated-value="true">
-			 </canvas>
-			 <div class="etiqueta">
-			 	{{ temperatura['RaspTemp2']['Data'][1] }}&deg
-			 </div>
-			</div>
+			        </canvas>
+			        <div class="etiqueta">
+			 	        {{ temperatura['RaspTemp2']['Data'][1] }}&deg
+			        </div>
+			    </div>
+		    </div>
 		</div>
 	</div>
 {% endblock %}
