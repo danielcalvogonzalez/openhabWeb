@@ -121,3 +121,19 @@
     text-align: center;
     margin: 0 auto;
 }
+
+
+@media only screen and (max-width: 600px) {
+    [class^="col"] {
+        max-width: none;
+        width: 100%;
+    }
+    
+    .vacia {
+        width: 0px;
+        height: 0px;
+    }
+    
+    .contenido h3 {
+        font-size: 26px;
+}
