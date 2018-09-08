@@ -63,6 +63,12 @@ header {
     transition: all 300 ms;
 }
 
+@media only screen and (max-width: 600px) {
+	.menu {
+		width: 0px;
+	}
+}
+
 .menu-show {
     width: 220px;
 }
@@ -107,6 +113,13 @@ main {
     background: #F9FAFB;
     width: calc(100% - 60px);
     min-height: calc(100% - 50px); /* IMPORTANTE */
+}
+
+@media only screen and (max-width: 600px) {
+	main {
+		left: 0px;
+		width: 100%;
+	}
 }
 
 .main-move {

@@ -136,4 +136,9 @@
     
     .contenido h3 {
         font-size: 26px;
+    }
+ 
+    img {
+        max-width: 95%;
+    }
 }
