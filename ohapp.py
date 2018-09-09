@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from flask import Flask, render_template
+from flask import Flask, render_template, make_response
 from mysql.connector import errorcode
 import mysql.connector
 import datetime
@@ -151,6 +151,11 @@ def exterior():
 @app.route("/")
 def principal():
     return render_template("index.html", titulo = "Pagina Principal")
+
+@app.route("/switch")
+def swi():
+    r = make_response(render_template('switch.html'))
+    return r
 
 #
 # Comienzo
