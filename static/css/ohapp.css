@@ -15,6 +15,22 @@ header {
     z-index: 10;
 }
 
+.fa-bars {
+    float: left;
+    font-size: 30px;
+    color: white;
+    border: 1px solid transparent;
+    transition: all 300ms;
+    cursor: pointer;
+    padding: 6px;
+    margin: 6px;
+    
+}
+
+.fa-bars:hover {
+    border: 1px solid white;
+}
+
 .lnr-menu {
     float: left;
     font-size: 30px;
@@ -130,15 +146,3 @@ article p {
     font-size: 20px;
 }
 
-
-/*
-header h1 {
-    color: white;
-    text-align: center;
-    font-size: 26px;
-    position: absolute;
-    top: 10px;
-    left: 300px; 
-    
-}
-*/

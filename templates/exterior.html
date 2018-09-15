@@ -7,12 +7,17 @@
             <h3>Exterior</h3>
             <div class="col1">
                 <h5>Riego Jardín</h5>
-                <form>
-                    <input type="checkbox" class="lcs_check" name="sample" value="1" />
-                </form>
+                
+                <div class="interruptor">
                 <div class="etiqueta">
-                    XYZ
+                    Riego: 
                 </div>
+                <form class="formulario">
+                    <input type="checkbox" class="lcs_check" name="riego1" value="1" />
+                </form>
+                </div>
+        
+         
             </div>
             <div class="col1 vacia">
                 
@@ -23,10 +28,50 @@
         </div>
         
         <div class="fila">
+            <div class="col1">
+                <h5>Luces lateral</h5>
+                <div class="interruptor">
+                    <div class="etiqueta">
+                        Lateral:
+                    </div>
+                    <form class="formulario">
+                        <input type="checkbox" class="lcs_check" name="luzlateral" value="1" />
+                    </form>
+                </div>
+            </div>
+            <div class="col1">
+                <h5>Luces escalera</h5>
+                <div class="interruptor">
+                    <div class="etiqueta">
+                        Escalera:
+                    </div>
+                    <form class="formulario">
+                        <input type="checkbox" class="lcs_check" name="luzlateral" value="1" />
+                    </form>
+                </div>
+            </div>
+            <div class="col1">
+                 <h5>Luces cenador</h5>
+                <div class="interruptor">
+                    <div class="etiqueta">
+                        Cenador:
+                    </div>
+                    <form class="formulario">
+                        <input type="checkbox" class="lcs_check" name="luzlateral" value="1" />
+                    </form>
+                </div>   
+            </div>
+        </div>
+        <div class="fila">
             
             <div class="col1">
                 <h5>Luces Piscina</h5>
+                <form>
+                    <input type="checkbox" class="lcs_check" name="luzPiscina" value="1" />
+                </form>
+                
                 <div class="etiqueta">
+                
                 Etiqueta
                 </div>
             </div>
@@ -37,36 +82,14 @@
                 </div>
             </div>
             <div class="col1">
-                <h5>Temp Piscina</h5>
-                <div class="etiqueta">
-                Etiqueta
-                </div>
+                <h5>Temperatura Piscina</h5>
+                
+                
             </div>
         </div>
 	</div>
 	
-	<script type="text/javascript">
-        $(document).ready(function(e) {
-             $('input').lc_switch();
-        });
-        
-        $('body').delegate('.lcs_check', 'lcs-statuschange', function() {
-    var status = ($(this).is(':checked')) ? 'checked' : 'unchecked';
-    console.log('field changed status: '+ status );
-});
-	
-	
-// triggered each time a field is checked
-$('body').delegate('.lcs_check', 'lcs-on', function() {
-     console.log('field is checked');
-});
-	
-
-// triggered each time a field is unchecked
-$('body').delegate('.lcs_check', 'lcs-off', function() {
-     console.log('field is unchecked');
-});
-    </script>
+	<script src="static/js/switch-1.js" type="text/javascript"></script>
     
 {% endblock %}
 

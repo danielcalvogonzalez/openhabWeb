@@ -4,6 +4,8 @@
     text-align: center;
     width: 90%;
     min-height: calc(100% - 50px); /* IMPORTANTE */
+    max-width: 1200px; /* Cambio */
+    margin: auto;
     font-family: Roboto,-apple-system,system-ui,BlinkMacSystemFont,Segoe UI,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Arial,sans-serif;    
 }
 
@@ -110,8 +112,24 @@
     margin-left: 20px;
 }
 
+.footer {
+    text-align: left;
+    margin-left: 20px;
+}
+
+.texto {
+    display: inline-block;
+    font-size: 14px;
+    text-align: left;
+    padding-bottom: 5px;
+    margin-left: 6px;
+    color: #828789;
+    font-weight: bold;
+    font-family: Roboto,-apple-system,system-ui,BlinkMacSystemFont,Segoe UI,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Arial,sans-serif;    
+}
+
 .etiqueta {
-    width: 4em;
+    width: 5em;
     font-size: 18px;
     background: #BABAB2;
     color: #525251;
@@ -120,8 +138,16 @@
     border-color: #8F8F89;
     text-align: center;
     margin: 0 auto;
+    display: inline-block;
 }
 
+.interruptor {
+    margin-top: 60px;
+}
+
+.formulario {
+    display: inline-block;
+}
 
 @media only screen and (max-width: 600px) {
     [class^="col"] {

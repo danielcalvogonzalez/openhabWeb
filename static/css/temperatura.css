@@ -68,7 +68,6 @@
     line-height: 80px;
     text-align: left;
     background: red;
-    margin: 20px auto;
     color: red;
     display: inline-block;
     animation: blinker 1s linear infinite;
@@ -85,7 +84,6 @@
     line-height: 80px;
     text-align: left;
     background: green;
-    margin: 20px auto;
     color: green;
     display: inline-block;
 }

@@ -16,15 +16,16 @@
 			{% endif %}
 			{{ temperatura.DespachoTemp.Data[1] }}&deg
 			</div>
-            {% if temperatura.DespachoTemp.Updated == "ON" %}
-			    <div class="ON"></div>
-            {% else %}
-			    <div class="OFF"></div>
-			{% endif %}
-
-			<h6>
-				{{ temperatura.DespachoTemp.Fecha }}
-			</h6>
+            <div class="footer">
+                {% if temperatura.DespachoTemp.Updated == "ON" %}
+                    <div class="ON"></div>
+                {% else %}
+                    <div class="OFF"></div>
+                {% endif %}
+                <div class="texto">
+                    {{ temperatura.DespachoTemp.Fecha }}
+                </div>
+			</div>
 		</div>
 		<div class="col1">
 			<h5>Buhardilla</h5>
@@ -37,9 +38,16 @@
 			{% endif %}
 			{{ temperatura.BuhardillaTemp.Data[1] }}&deg
 			</div>
-			<h6>
-				{{ temperatura.BuhardillaTemp.Fecha }}
-			</h6>
+			<div class="footer">
+                {% if temperatura.BuhardillaTemp.Updated == "ON" %}
+                    <div class="ON"></div>
+                {% else %}
+                    <div class="OFF"></div>
+                {% endif %}
+                <div class="texto">
+                    {{ temperatura.BuhardillaTemp.Fecha }}
+                </div>
+			</div>
 		</div>
 		<div class="col1">
 			<h5>Sotano</h5>
@@ -52,9 +60,16 @@
 			{% endif %}
 			{{ temperatura.SotanoTemp.Data[1] }}&deg
 			</div>
-			<h6>
-				{{ temperatura.SotanoTemp.Fecha }}
-			</h6>
+			<div class="footer">
+                {% if temperatura.SotanoTemp.Updated == "ON" %}
+                    <div class="ON"></div>
+                {% else %}
+                    <div class="OFF"></div>
+                {% endif %}
+                <div class="texto">
+                    {{ temperatura.SotanoTemp.Fecha }}
+                </div>
+			</div>
 		</div>
         </div>
         
@@ -72,9 +87,16 @@
 			{% endif %}
 			{{ temperatura.GarajeTemp.Data[1] }}&deg
 			</div>
-			<h6>
-				{{ temperatura.GarajeTemp.Fecha }}
-			</h6>
+			<div class="footer">
+                {% if temperatura.GarajeTemp.Updated == "ON" %}
+                    <div class="ON"></div>
+                {% else %}
+                    <div class="OFF"></div>
+                {% endif %}
+                <div class="texto">
+                    {{ temperatura.GarajeTemp.Fecha }}
+                </div>
+			</div>
 		</div>
         <div class="col1 vacia">
         </div>
