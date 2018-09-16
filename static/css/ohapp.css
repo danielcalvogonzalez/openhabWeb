@@ -112,6 +112,12 @@ header {
     cursor: pointer;
 }
 
+.far {
+    font-size: 28px;
+    color: white;
+    cursor: pointer;
+}
+
 .opcion {
     color: white;
     margin-left: 10px;

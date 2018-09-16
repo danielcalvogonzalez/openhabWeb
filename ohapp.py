@@ -5,8 +5,12 @@ from mysql.connector import errorcode
 import mysql.connector
 import datetime
 import sys
+import requests
 
 UPDATE_INTERVAL = 20
+
+SERVER_ADDRESS_LABEL = 'http://192.168.24.6:8080/rest/items/{0}'
+SERVER_ADDRESS_STATE = 'http://192.168.24.6:8080/rest/items/{0}/state'
 
 sondaTemp = {'Temperatura': {},
              'DespachoTemp': {},
@@ -22,6 +26,13 @@ sondaHumedad = {'DespachoHumedad': {},
                 'SotanoHumedad': {},
                 'GarajeHumedad': {}
                }
+# /items/{itemname}/state
+
+sondaPresencia = {'Asus1_Online': {},
+                  'Asus2_Online': {},
+                  'DIR625_Online': {},
+                  'DIR655_Online': {}
+                 }
 
 app = Flask(__name__)
 
@@ -126,6 +137,28 @@ def updateHumedad():
         sondaHumedad[objeto]['Data'] = getHumedadEx(sondaHumedad[objeto])
         sondaHumedad[objeto]['Fecha'] = sondaHumedad[objeto]['Data'][0].strftime("%d/%m/%Y %H:%M:%S")
 
+
+def getPresences():
+    for objeto in sondaPresencia:
+        url = SERVER_ADDRESS_LABEL.format(objeto)
+        r = requests.get(url)
+        if r.status_code == 200:
+            respuesta = r.json()
+            sondaPresencia[objeto]['Nombre'] = respuesta['label']
+        url = SERVER_ADDRESS_STATE.format(objeto)
+        r = requests.get(url)
+        if r.status_code == 200:
+            sondaPresencia[objeto]['Status'] = r.text
+        else:
+            sondaPresencia[objeto]['Status'] = "Desconocido"
+
+@app.route("/presencia")
+def presencia():
+    getPresences()
+    return render_template("redlocal.html", titulo = "Diseno Red", 
+                            presencia = sondaPresencia) 
+    
+        
 @app.route("/temperatura")
 def temp():
     updateTemps()

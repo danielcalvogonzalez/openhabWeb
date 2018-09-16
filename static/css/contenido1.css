@@ -141,6 +141,18 @@
     display: inline-block;
 }
 
+.eti {
+    width: 5em;
+    font-size: 18px;
+    background: #BABAB2;
+    color: #525251;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #8F8F89;
+    text-align: center;
+    margin: 0 auto;
+}
+
 .interruptor {
     margin-top: 60px;
 }

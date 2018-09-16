@@ -119,6 +119,16 @@
 			{% endif %}
 			{{ temperatura.Temperatura.Data[1] }}&deg
             </div>
+            <div class="footer">
+                {% if temperatura.Temperatura.Updated == "ON" %}
+                    <div class="ON"></div>
+                {% else %}
+                    <div class="OFF"></div>
+                {% endif %}
+                <div class="texto">
+                    {{ temperatura.Temperatura.Fecha }}
+                </div>
+			</div>
         </div>
         <div class="col1 vacia">
         </div>
@@ -162,7 +172,7 @@
 			        data-font-value="Led"
 			        data-animated-value="true">
 			        </canvas>
-			        <div class="etiqueta">
+			        <div class="eti">
 			 	        {{ humedad['DespachoHumedad']['Data'][1] }}%
 			        </div>
 			    </div>
@@ -202,7 +212,7 @@
 			        data-font-value="Led"
 			        data-animated-value="true">
 			        </canvas>
-			        <div class="etiqueta">
+			        <div class="eti">
 			 	        {{ humedad['BuhardillaHumedad']['Data'][1] }}%
 			        </div>
 			    </div>
@@ -242,7 +252,7 @@
 			        data-font-value="Led"
 			        data-animated-value="true">
 			        </canvas>
-			        <div class="etiqueta">
+			        <div class="eti">
 			 	        {{ humedad['SotanoHumedad']['Data'][1] }}%
 			        </div>
 			    </div>
@@ -288,7 +298,7 @@
 			        data-font-value="Led"
 			        data-animated-value="true">
 			        </canvas>
-			        <div class="etiqueta">
+			        <div class="eti">
 			 	        {{ humedad['GarajeHumedad']['Data'][1] }}%
 			        </div>
 			    </div>
@@ -299,7 +309,5 @@
 	    </div>
     </div>
 
-
-	<p>960 pixels para tres columnas</p>
 
 {% endblock %}
