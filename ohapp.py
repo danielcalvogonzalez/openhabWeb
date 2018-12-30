@@ -21,23 +21,37 @@ sondaPresencia = {}
 
 app = Flask(__name__)
 
-def initConfiguration():
-    try:
-        cnx = mysql.connector.connect(option_files="myopc.cnf")
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
-        else:
-            print(err)
+def initConfiguration(conexion = None):
 
+    if conexion == None:
+        try:
+            cnx = mysql.connector.connect(option_files="myopc.cnf")
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Something is wrong with your user name or password")
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print("Database does not exist")
+            else:
+                print(err)
+    else:
+        cnx = conexion
+        
     cursor = cnx.cursor()
 
     query = ("select * from Configuracion")
 	
     cursor.execute(query)
-	
+#
+# Inicializa las variables que contienen los nombres de todos los "items"
+# de openHAB que hay que monitorizar o mostrar el resultado en el servidore Web
+#
+# sondaTemp tiene todos los sensores tipo Temperatura
+# sondaHumedad tiene todos los sensores tipo Humedad
+# sondaPresencia tiene todos los sensores tipo Presencia
+#
+# Utilizo el método .encode('ascii') pues tal y como llega de la BBDD 
+# no puedo utilizarlo directamente
+#
     for sensor, tipo in cursor:
         sensor1 = sensor.encode('ascii')
         if tipo == 'temp':
@@ -48,8 +62,41 @@ def initConfiguration():
             sondaPresencia[sensor1] = {}
 
     cursor.close()
-    cnx.close()
+    if conexion == "":
+        cnx.close()
     return
+
+def locateItemsName(conexion = None):
+    if conexion == None:
+        try:
+            cnx = mysql.connector.connect(option_files="myopc.cnf")
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+               print("Something is wrong with your user name or password")
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print("Database does not exist")
+            else:
+                print(err)
+    else:
+        cnx = conexion
+
+    cursor = cnx.cursor()
+
+    query = ("SELECT * from Items")
+
+    cursor.execute(query)
+
+    for (Id, Name) in cursor:
+        if Name in sondaTemp:
+            sondaTemp[Name]['ID'] = 'Item' + str(Id)
+            if Name in sondaHumedad:
+                    sondaHumedad[Name]['ID'] = 'Item' + str(Id)
+
+    cursor.close()
+
+    if conexion == "":
+        cnx.close()
+
 	
 def getHistorico():
     try:
@@ -246,31 +293,19 @@ def historico():
 # Comienzo
 #
 
-initConfiguration()
-
 try:
     cnx = mysql.connector.connect(option_files="myopc.cnf")
 except mysql.connector.Error as err:
     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-       print("Something is wrong with your user name or password")
+        print("Something is wrong with your user name or password")
     elif err.errno == errorcode.ER_BAD_DB_ERROR:
         print("Database does not exist")
     else:
         print(err)
 
-cursor = cnx.cursor()
+initConfiguration(cnx)
 
-query = ("SELECT * from Items")
-
-cursor.execute(query)
-
-for (Id, Name) in cursor:
-	if Name in sondaTemp:
-		sondaTemp[Name]['ID'] = 'Item' + str(Id)
-        if Name in sondaHumedad:
-                sondaHumedad[Name]['ID'] = 'Item' + str(Id)
-
-cursor.close()
+locateItemsName(cnx)
 
 cnx.close()
 

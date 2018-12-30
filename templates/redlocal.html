@@ -4,28 +4,28 @@
 	<div class="contenido">
         <h3>Leases DHCP</h3>
         <div>
-        {{ tabla }}
-        
+                
 <table class="blueTable">
 <thead>
 <tr>
-<th>head1</th>
-<th>head2</th>
-<th>head3</th>
-<th>head4</th>
-<th>head5</th>
-<th>head6</th>
+<th>Dirección IP</th>
+<th>MAC Address</th>
+<th>Nombre</th>
+<th>Desde</th>
+<th>Hasta</th>
+
 </tr>
 </thead>
 <tbody>
-{% for i in tabla %}
+{% for item in tabla %}
 <tr>
-<td>{{ i[0] }}</td>
-<td>{{ i.ip }}</td>
-<td>cell3_1</td>
-<td>cell4_1</td>
-<td>cell5_1</td>
-<td>cell6_1</td>
+{% for key, valor in item.iteritems() %}
+<td>{{ key }}</td>
+<td>{{ valor["ethernet"] }}</td>
+<td>{{ valor["hostname"] }}</td>
+<td>{{ valor["start"] }}</td>
+<td>{{ valor["end"] }}</td>
+{% endfor %}
 </tr>
 {% endfor %}
 </tbody>

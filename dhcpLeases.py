@@ -1,4 +1,8 @@
 # coding=utf-8
+# 
+# Este codigo es usado desde el programa principal para
+# mostrar el resultado de las leases activas de DHCP
+#
 
 from isc_dhcp_leases import Lease, IscDhcpLeases
 
