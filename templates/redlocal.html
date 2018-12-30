@@ -2,6 +2,38 @@
 {% block contenido %}
 	
 	<div class="contenido">
+        <h3>Leases DHCP</h3>
+        <div>
+        {{ tabla }}
+        
+<table class="blueTable">
+<thead>
+<tr>
+<th>head1</th>
+<th>head2</th>
+<th>head3</th>
+<th>head4</th>
+<th>head5</th>
+<th>head6</th>
+</tr>
+</thead>
+<tbody>
+{% for i in tabla %}
+<tr>
+<td>{{ i[0] }}</td>
+<td>{{ i.ip }}</td>
+<td>cell3_1</td>
+<td>cell4_1</td>
+<td>cell5_1</td>
+<td>cell6_1</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+        </div>
+        
+        
 		<h3>Esquema Red Local</h3>
         <div class="imagen-foto">
 			<img src="/static/images/RedLocal.jpg">

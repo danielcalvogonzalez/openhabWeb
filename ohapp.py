@@ -6,35 +6,78 @@ import mysql.connector
 import datetime
 import sys
 import requests
+import dhcpLeases
 
-UPDATE_INTERVAL = 20
+UPDATE_INTERVAL = 20		# Tiempo máximo que si no ha habido actualización, se declara como offline
+
 
 SERVER_ADDRESS_LABEL = 'http://192.168.24.6:8080/rest/items/{0}'
 SERVER_ADDRESS_STATE = 'http://192.168.24.6:8080/rest/items/{0}/state'
 
-sondaTemp = {'Temperatura': {},
-             'DespachoTemp': {},
-             'BuhardillaTemp': {},
-             'SotanoTemp': {},
-             'GarajeTemp': {},
-             'RaspTemp1': {},
-             'RaspTemp2': {}
-            }
 
-sondaHumedad = {'DespachoHumedad': {},
-                'BuhardillaHumedad': {},
-                'SotanoHumedad': {},
-                'GarajeHumedad': {}
-               }
-# /items/{itemname}/state
-
-sondaPresencia = {'Asus1_Online': {},
-                  'Asus2_Online': {},
-                  'DIR625_Online': {},
-                  'DIR655_Online': {}
-                 }
+sondaTemp = {}
+sondaHumedad = {}
+sondaPresencia = {}
 
 app = Flask(__name__)
+
+def initConfiguration():
+    try:
+        cnx = mysql.connector.connect(option_files="myopc.cnf")
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist")
+        else:
+            print(err)
+
+    cursor = cnx.cursor()
+
+    query = ("select * from Configuracion")
+	
+    cursor.execute(query)
+	
+    for sensor, tipo in cursor:
+        sensor1 = sensor.encode('ascii')
+        if tipo == 'temp':
+            sondaTemp[sensor1] = {}
+        elif tipo == 'humedad':
+            sondaHumedad[sensor1] = {}
+        elif tipo == 'presencia':
+            sondaPresencia[sensor1] = {}
+
+    cursor.close()
+    cnx.close()
+    return
+	
+def getHistorico():
+    try:
+        cnx = mysql.connector.connect(option_files="myopc.cnf")
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist")
+        else:
+            print(err)
+
+    cursor = cnx.cursor()
+
+    query = ("select Dia, Media from Item1_Daily order by Dia desc limit 30")
+
+    cursor.execute(query)
+
+    listaFechas = []
+    listaValores = []
+    for (fecha, valor ) in cursor:
+
+        listaFechas.append(fecha.strftime('%Y-%m-%d'))
+        listaValores.append(float(valor))
+
+    cursor.close()
+    cnx.close()
+    return listaFechas, listaValores
 
 def getTemp(Sensor):
     try:
@@ -155,8 +198,9 @@ def getPresences():
 @app.route("/presencia")
 def presencia():
     getPresences()
+    direcciones = dhcpLeases.getCurrentLeases()
     return render_template("redlocal.html", titulo = "Diseno Red", 
-                            presencia = sondaPresencia) 
+                            presencia = sondaPresencia, tabla = direcciones) 
     
         
 @app.route("/temperatura")
@@ -168,7 +212,11 @@ def temp():
 
 @app.route("/red")
 def showRed():
-    return render_template("redlocal.html", titulo = "Diseno Red") 
+    getPresences()
+    direcciones = dhcpLeases.getCurrentLeases()
+    return render_template("redlocal.html", titulo = "Diseno Red", 
+                            presencia = sondaPresencia, tabla = direcciones) 
+
 
 @app.route("/raspberry")
 def showRaspBerry():
@@ -190,9 +238,15 @@ def swi():
     r = make_response(render_template('switch.html'))
     return r
 
+@app.route("/historico")
+def historico():
+    vFechas, vValores = getHistorico()
+    return render_template("historico.html", titulo = "Grafico Historico", fechas = vFechas, valores = vValores) 
 #
 # Comienzo
 #
+
+initConfiguration()
 
 try:
     cnx = mysql.connector.connect(option_files="myopc.cnf")
