@@ -242,6 +242,44 @@ def getPresences():
         else:
             sondaPresencia[objeto]['Status'] = "Desconocido"
 
+def ordenarDhcpFijas(direccion):
+    trozos = direccion["ip"].split('.')
+    return (int(trozos[3]))
+    
+def getStaticDhcp():
+    try:
+        cnx = mysql.connector.connect(option_files="myopc.cnf")
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist")
+        else:
+            print(err)
+        
+    cursor = cnx.cursor()
+
+    query = ("select * from Dispositivos where Pool IN (1,2)")
+	
+    cursor.execute(query)
+    
+    direcciones = []
+
+    for mac, ip, desc, ubicacion, pool, poolName in cursor:
+        objeto = {}
+        objeto['ip'] = ip
+        objeto['ethernet'] = mac
+        objeto['hostname'] = desc
+        objeto['pool'] = poolName       #.encode('ascii')
+        
+        direcciones.append(objeto)
+        
+    direcciones.sort(key=ordenarDhcpFijas)
+    cursor.close()
+    cnx.close()
+    return direcciones
+
+
 @app.route("/presencia")
 def presencia():
     getPresences()
@@ -261,8 +299,11 @@ def temp():
 def showRed():
     getPresences()
     direcciones = dhcpLeases.getCurrentLeases()
+    direccionesFijas = getStaticDhcp()
+    
+    
     return render_template("redlocal.html", titulo = "Diseno Red", 
-                            presencia = sondaPresencia, tabla = direcciones) 
+                            presencia = sondaPresencia, tabla = direcciones, tablaFija = direccionesFijas) 
 
 
 @app.route("/raspberry")

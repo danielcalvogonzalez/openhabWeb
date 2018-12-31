@@ -30,10 +30,43 @@
 {% endfor %}
 </tbody>
 </table>
+        </div>
+ 
+<canvas height="50">
+</canvas>
+
+ 
+        <h3>DHCP Estáticas</h3>
+        <div>
+<table class="blueTable">
+<thead>
+<tr>
+<th>Dirección IP</th>
+<th>MAC Address</th>
+<th>Nombre</th>
+<th>Pool</th>
+<th>Hasta</th>
+
+</tr>
+</thead>
+<tbody>
+{% for item in tablaFija %}
+<tr>
+<td>{{ item["ip"] }} </td>
+<td>{{ item["ethernet"] }}</td>
+<td>{{ item["hostname"] }}</td>
+<td>{{ item["pool"] }}</td>
+<td> valor["end"] </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
 
         </div>
-        
-        
+  
+<canvas height="50">
+</canvas>
+  
 		<h3>Esquema Red Local</h3>
         <div class="imagen-foto">
 			<img src="/static/images/RedLocal.jpg">
