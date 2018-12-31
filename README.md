@@ -1,5 +1,8 @@
 # openhabWeb
-Servidor Web para openhab
+Servidor Web para *openHAB*
 
-Contenido del servidor Web que interactua con openHAB para mostrar los datos de una instalación personal
+Desarrollo propio empleando Python, Flask y JS para crear un frontal adaptado a mis necesidades
+que accede a los datos de un servidor openHAB doméstico.
+
+El sistema está siempre en desarrollo.
 

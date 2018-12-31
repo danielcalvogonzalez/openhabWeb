@@ -89,9 +89,13 @@ def locateItemsName(conexion = None):
     for (Id, Name) in cursor:
         if Name in sondaTemp:
             sondaTemp[Name]['ID'] = 'Item' + str(Id)
-            if Name in sondaHumedad:
-                    sondaHumedad[Name]['ID'] = 'Item' + str(Id)
+        if Name in sondaHumedad:
+            sondaHumedad[Name]['ID'] = 'Item' + str(Id)
 
+    print sondaTemp
+    print "AQUI"
+    print sondaHumedad
+    
     cursor.close()
 
     if conexion == "":
