@@ -8,6 +8,7 @@ import settings
 import datetime
 import sys
 import requests
+
 import util
 import dhcpLeases
 
@@ -243,7 +244,7 @@ def showRed():
     
     direcciones = dhcpLeases.getCurrentLeases1()
 
-    return render_template("redlocal1.html", titulo = "Diseno Red", 
+    return render_template("redlocal1.html", titulo = "Diseño Red", 
                             presencia = settings.sondaPresencia, tabla = direcciones)     
 #    direcciones = dhcpLeases.getCurrentLeases()
 #    direccionesFijas = getStaticDhcp()
@@ -257,7 +258,7 @@ def showRed():
 def showRaspBerry():
     updateTemps()
 
-    return render_template("raspberry.html", titulo = "Diseno RaspBerry PI",
+    return render_template("raspberry.html", titulo = "Diseño RaspBerry PI",
                             temperatura = settings.sondaTemp) 
 
 @app.route("/exterior")
@@ -266,7 +267,7 @@ def exterior():
 
 @app.route("/")
 def principal():
-    return render_template("index.html", titulo = "Pagina Principal")
+    return render_template("index.html", titulo = "Página Principal")
 
 @app.route("/switch")
 def swi():

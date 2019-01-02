@@ -7,7 +7,8 @@
 from mysql.connector import errorcode
 import mysql.connector
 from isc_dhcp_leases import Lease, IscDhcpLeases
-from util import printError
+
+import util
 
 DHCP_LEASES_FILENAME = '/mnt/dhcp/dhcpd.leases'
 
@@ -21,11 +22,13 @@ DHCP_LEASES_FILENAME = '/mnt/dhcp/dhcpd.leases'
 class IPObject(object):
     
     def __init__(self,ip):
-        self.ip = ip
-        self.name = ''
-        self.mac = ''
-        self.pool = -1
+        self.ip    = ip
+        self.name  = ''
+        self.mac   = ''
+        self.pool  = -1
         self.poolName = ''
+#@ self.endDate        
+        
         
     def __repr__(self):
         return ("Object {} has {}, name {} in pool {} - {}".format(self.ip,self.mac,self.name,self.pool,self.poolName))
@@ -49,36 +52,28 @@ def getCurrentLeases1():
     for objeto in currentLeases.values():
         dispositivo      = IPObject(objeto.ip)
         dispositivo.name = objeto.hostname
-        dispositivo.mac  = objeto.ethernet
+        dispositivo.mac  = objeto.ethernet.upper()
         dispositivo.pool = 3
         dispositivo.poolName = 'DHCP'
+        dispositivo.endDate  = objeto.end
         resultado.append(dispositivo)
 
 # Ya tengo las direcciones de leases DHCP
 #
 # toca unir los resultados a las fijas y estáticas
  
-    try:
-        cnx = mysql.connector.connect(option_files="myopc.cnf")
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            printError("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            printError("Database does not exist")
-        else:
-            printError(err)
+    cnx = util.openDDBB()
 
     cursor = cnx.cursor()
 
     txtQuery = "select Descripcion from Dispositivos where Mac = %s"
     
     for objeto in resultado:
-        print(objeto.mac)
+        
         cursor.execute(txtQuery, (objeto.mac,))
         
         for nombre in cursor:
-            print(nombre)
-            objeto.name = nombre
+            objeto.name = nombre[0]
         
     cursor.close()
 
@@ -90,15 +85,17 @@ def getCurrentLeases1():
     cursor.execute(query)
 
     for mac, ip, desc, pool, poolName in cursor:
-        dispositivo          = IPObject(ip.encode('ascii'))
+        dispositivo          = IPObject(ip)
         dispositivo.name     = desc
-        dispositivo.mac      = mac.encode('ascii')
+        dispositivo.mac      = mac.upper()
         dispositivo.pool     = pool
-        dispositivo.poolName = poolName.encode('ascii')
+        dispositivo.poolName = poolName
+        dispositivo.endDate  = 'N/A'
         resultado.append(dispositivo)
 
     cursor.close()
-    cnx.close()
+
+    util.closeDDBB(cnx)
     
     resultado.sort(key=ordenar1)
     

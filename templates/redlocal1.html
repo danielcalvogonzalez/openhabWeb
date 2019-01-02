@@ -3,8 +3,9 @@
 	
 	<div class="contenido">
         <h3>Leases DHCP</h3>
- 
-        <h3>DHCP Estáticas</h3>
+
+        <canvas height="30"> </canvas>
+        
         <div>
 <table class="blueTable">
 <thead>
@@ -24,7 +25,7 @@
 <td>{{ item["mac"] }}</td>
 <td>{{ item["name"] }}</td>
 <td>{{ item["poolName"] }}</td>
-<td> valor["end"] </td>
+<td>{{ item["endDate"] }} </td>
 </tr>
 {% endfor %}
 </tbody>
