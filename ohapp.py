@@ -1,32 +1,22 @@
 #!/usr/bin/python3
 # coding=utf-8
 
-
 from flask import Flask, render_template, make_response
 from mysql.connector import errorcode
 import mysql.connector
-from util import printError
-from globalConfig import *
+import settings
 import datetime
 import sys
 import requests
+import util
 import dhcpLeases
 
-UPDATE_INTERVAL = 20		# Tiempo máximo que si no ha habido actualización, se declara como offline
-
-
-SERVER_ADDRESS_LABEL = 'http://192.168.24.6:8080/rest/items/{0}'
-SERVER_ADDRESS_STATE = 'http://192.168.24.6:8080/rest/items/{0}/state'
-
-sondaTemp = {}
-sondaHumedad = {}
-sondaPresencia = {}
 
 app = Flask(__name__)
 
 def byebye(texto):
-    printError(texto)
-    printError("Shutting down the system as I can't start")
+    util.printError(texto)
+    util.printError("Shutting down the system as I can't start")
     sys.exit("Ooopss, I can't start. Check syslog.")
     
 #
@@ -59,35 +49,28 @@ def initConfiguration(conexion = None):
 # sondaHumedad      tiene todos los sensores tipo Humedad
 # sondaPresencia    tiene todos los sensores tipo Presencia
 #
-# Utilizo el método .encode('ascii') pues tal y como llega de la BBDD 
-# no puedo utilizarlo directamente
 #
     for sensor, tipo in cursor:
-        sensor1 = sensor.encode('ascii')
         if tipo == 'temp':
-            sondaTemp[sensor1] = {}
+            settings.sondaTemp[sensor] = {}
         elif tipo == 'humedad':
-            sondaHumedad[sensor1] = {}
+            settings.sondaHumedad[sensor] = {}
         elif tipo == 'presencia':
-            sondaPresencia[sensor1] = {}
-
-    cursor.close()
+            settings.sondaPresencia[sensor] = {}
     
 # Ahora toca la segunda parte
 # encuentra la tabla donde se almacena la información
 # de cada objeto
-
-    cursor = cnx.cursor()
 
     query = ("SELECT * from Items")
 
     cursor.execute(query)
 
     for (Id, Name) in cursor:
-        if Name in sondaTemp:
-            sondaTemp[Name]['ID'] = 'Item' + str(Id)
-        if Name in sondaHumedad:
-            sondaHumedad[Name]['ID'] = 'Item' + str(Id)
+        if Name in settings.sondaTemp:
+            settings.sondaTemp[Name]['ID'] = 'Item' + str(Id)
+        if Name in settings.sondaHumedad:
+            settings.sondaHumedad[Name]['ID'] = 'Item' + str(Id)
    
     cursor.close()
 
@@ -96,16 +79,8 @@ def initConfiguration(conexion = None):
     return
     
 def getHistorico():
-    try:
-        cnx = mysql.connector.connect(option_files="ohapp.cnf")
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            printError("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            printError("Database does not exist")
-        else:
-            printError(err)
-
+    cnx = util.openDDBB()
+    
     cursor = cnx.cursor()
 
     query = ("select Dia, Media from Item1_Daily order by Dia desc limit 30")
@@ -120,19 +95,11 @@ def getHistorico():
         listaValores.append(float(valor))
 
     cursor.close()
-    cnx.close()
+    util.closeDDBB(cnx)
     return listaFechas, listaValores
 
 def getTemp(Sensor):
-    try:
-        cnx = mysql.connector.connect(option_files="ohapp.cnf")
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-         printError("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            printError("Database does not exist")
-        else:
-            printError(err)
+    cnx = util.openDDBB()
 
     cursor = cnx.cursor()
 
@@ -146,22 +113,14 @@ def getTemp(Sensor):
         now = valor
 
     cursor.close()
-    cnx.close()
+    util.closeDDBB(cnx)
     return valor
 
 def getTempEx(Sensor):
     if 'ID' not in Sensor:
         return (datetime.datetime.now(), -99)
 
-    try:
-        cnx = mysql.connector.connect(option_files="ohapp.cnf")
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-         printError("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            printError("Database does not exist")
-        else:
-            printError(err)
+    cnx = util.openDDBB()
 
     cursor = cnx.cursor()
 
@@ -175,22 +134,16 @@ def getTempEx(Sensor):
         now = valor
 
     cursor.close()
-    cnx.close()
+    
+    util.closeDDBB(cnx)
+    
     return (momento, valor)
 
 def getHumedadEx(Sensor):
     if 'ID' not in Sensor:
         return (datetime.datetime.now(), -99)
 
-    try:
-        cnx = mysql.connector.connect(option_files="ohapp.cnf")
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-         printError("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            printError("Database does not exist")
-        else:
-            printError(err)
+    cnx = util.openDDBB()
 
     cursor = cnx.cursor()
 
@@ -204,55 +157,47 @@ def getHumedadEx(Sensor):
         now = valor
 
     cursor.close()
-    cnx.close()
+    util.closeDDBB(cnx)
     return (momento, valor)
 
 def updateTemps():
     now = datetime.datetime.now()
-    for objeto in sondaTemp:
-        sondaTemp[objeto]['Data'] = getTempEx(sondaTemp[objeto])
-        sondaTemp[objeto]['Fecha'] = sondaTemp[objeto]['Data'][0].strftime("%d/%m/%Y %H:%M:%S")
-        minutos = ((now - sondaTemp[objeto]['Data'][0]).seconds) / 60
-        if minutos >= UPDATE_INTERVAL:
-            sondaTemp[objeto]['Updated'] = 'OFF'
+    for objeto in settings.sondaTemp:
+        settings.sondaTemp[objeto]['Data'] = getTempEx(settings.sondaTemp[objeto])
+        settings.sondaTemp[objeto]['Fecha'] = settings.sondaTemp[objeto]['Data'][0].strftime("%d/%m/%Y %H:%M:%S")
+        minutos = ((now - settings.sondaTemp[objeto]['Data'][0]).seconds) / 60
+        if minutos >= settings.UPDATE_INTERVAL:
+            settings.sondaTemp[objeto]['Updated'] = 'OFF'
         else:
-            sondaTemp[objeto]['Updated'] = 'ON'
+            settings.sondaTemp[objeto]['Updated'] = 'ON'
     
 
 def updateHumedad():
-    for objeto in sondaHumedad:
-        sondaHumedad[objeto]['Data'] = getHumedadEx(sondaHumedad[objeto])
-        sondaHumedad[objeto]['Fecha'] = sondaHumedad[objeto]['Data'][0].strftime("%d/%m/%Y %H:%M:%S")
+    for objeto in settings.sondaHumedad:
+        settings.sondaHumedad[objeto]['Data'] = getHumedadEx(settings.sondaHumedad[objeto])
+        settings.sondaHumedad[objeto]['Fecha'] = settings.sondaHumedad[objeto]['Data'][0].strftime("%d/%m/%Y %H:%M:%S")
 
 
 def getPresences():
-    for objeto in sondaPresencia:
-        url = SERVER_ADDRESS_LABEL.format(objeto)
+    for objeto in settings.sondaPresencia:
+        url = settings.SERVER_ADDRESS_LABEL.format(objeto)
         r = requests.get(url)
         if r.status_code == 200:
             respuesta = r.json()
-            sondaPresencia[objeto]['Nombre'] = respuesta['label']
-        url = SERVER_ADDRESS_STATE.format(objeto)
+            settings.sondaPresencia[objeto]['Nombre'] = respuesta['label']
+        url = settings.SERVER_ADDRESS_STATE.format(objeto)
         r = requests.get(url)
         if r.status_code == 200:
-            sondaPresencia[objeto]['Status'] = r.text
+            settings.sondaPresencia[objeto]['Status'] = r.text
         else:
-            sondaPresencia[objeto]['Status'] = "Desconocido"
+            settings.sondaPresencia[objeto]['Status'] = "Desconocido"
 
 def ordenarDhcpFijas(direccion):
     trozos = direccion["ip"].split('.')
     return (int(trozos[3]))
     
 def getStaticDhcp():
-    try:
-        cnx = mysql.connector.connect(option_files="ohapp.cnf")
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            printError("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            printError("Database does not exist")
-        else:
-            printError(err)
+    cnx = util.openDDBB()
         
     cursor = cnx.cursor()
 
@@ -273,7 +218,7 @@ def getStaticDhcp():
         
     direcciones.sort(key=ordenarDhcpFijas)
     cursor.close()
-    cnx.close()
+    util.closeDDBB(cnx)
     return direcciones
 
 
@@ -282,7 +227,7 @@ def presencia():
     getPresences()
     direcciones = dhcpLeases.getCurrentLeases()
     return render_template("redlocal.html", titulo = "Diseno Red", 
-                            presencia = sondaPresencia, tabla = direcciones) 
+                            presencia = settings.sondaPresencia, tabla = direcciones) 
     
         
 @app.route("/temperatura")
@@ -290,7 +235,7 @@ def temp():
     updateTemps()
     updateHumedad()
     return render_template("temperatura.html", titulo = "Temperatura", 
-                            temperatura = sondaTemp, humedad = sondaHumedad) 
+                            temperatura = settings.sondaTemp, humedad = settings.sondaHumedad) 
 
 @app.route("/red")
 def showRed():
@@ -299,7 +244,7 @@ def showRed():
     direcciones = dhcpLeases.getCurrentLeases1()
 
     return render_template("redlocal1.html", titulo = "Diseno Red", 
-                            presencia = sondaPresencia, tabla = direcciones)     
+                            presencia = settings.sondaPresencia, tabla = direcciones)     
 #    direcciones = dhcpLeases.getCurrentLeases()
 #    direccionesFijas = getStaticDhcp()
     
@@ -313,7 +258,7 @@ def showRaspBerry():
     updateTemps()
 
     return render_template("raspberry.html", titulo = "Diseno RaspBerry PI",
-                            temperatura = sondaTemp) 
+                            temperatura = settings.sondaTemp) 
 
 @app.route("/exterior")
 def exterior():
