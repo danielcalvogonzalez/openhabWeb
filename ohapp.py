@@ -1,8 +1,12 @@
+#!/usr/bin/python3
 # coding=utf-8
+
 
 from flask import Flask, render_template, make_response
 from mysql.connector import errorcode
 import mysql.connector
+from util import printError
+from globalConfig import *
 import datetime
 import sys
 import requests
@@ -14,25 +18,31 @@ UPDATE_INTERVAL = 20		# Tiempo máximo que si no ha habido actualización, se de
 SERVER_ADDRESS_LABEL = 'http://192.168.24.6:8080/rest/items/{0}'
 SERVER_ADDRESS_STATE = 'http://192.168.24.6:8080/rest/items/{0}/state'
 
-
 sondaTemp = {}
 sondaHumedad = {}
 sondaPresencia = {}
 
 app = Flask(__name__)
 
+def byebye(texto):
+    printError(texto)
+    printError("Shutting down the system as I can't start")
+    sys.exit("Ooopss, I can't start. Check syslog.")
+    
+#
+# Lee la configuracion de la tabla 'Configuracion'
+#
 def initConfiguration(conexion = None):
-
     if conexion == None:
         try:
-            cnx = mysql.connector.connect(option_files="myopc.cnf")
+            cnx = mysql.connector.connect(option_files="ohapp.cnf")
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-                print("Something is wrong with your user name or password")
+                byebye("Something is wrong with your user name or password")
             elif err.errno == errorcode.ER_BAD_DB_ERROR:
-                print("Database does not exist")
+                byebye("Database does not exist")
             else:
-                print(err)
+                byebye(err)    
     else:
         cnx = conexion
         
@@ -45,9 +55,9 @@ def initConfiguration(conexion = None):
 # Inicializa las variables que contienen los nombres de todos los "items"
 # de openHAB que hay que monitorizar o mostrar el resultado en el servidore Web
 #
-# sondaTemp tiene todos los sensores tipo Temperatura
-# sondaHumedad tiene todos los sensores tipo Humedad
-# sondaPresencia tiene todos los sensores tipo Presencia
+# sondaTemp         tiene todos los sensores tipo Temperatura
+# sondaHumedad      tiene todos los sensores tipo Humedad
+# sondaPresencia    tiene todos los sensores tipo Presencia
 #
 # Utilizo el método .encode('ascii') pues tal y como llega de la BBDD 
 # no puedo utilizarlo directamente
@@ -62,23 +72,10 @@ def initConfiguration(conexion = None):
             sondaPresencia[sensor1] = {}
 
     cursor.close()
-    if conexion == "":
-        cnx.close()
-    return
-
-def locateItemsName(conexion = None):
-    if conexion == None:
-        try:
-            cnx = mysql.connector.connect(option_files="myopc.cnf")
-        except mysql.connector.Error as err:
-            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-               print("Something is wrong with your user name or password")
-            elif err.errno == errorcode.ER_BAD_DB_ERROR:
-                print("Database does not exist")
-            else:
-                print(err)
-    else:
-        cnx = conexion
+    
+# Ahora toca la segunda parte
+# encuentra la tabla donde se almacena la información
+# de cada objeto
 
     cursor = cnx.cursor()
 
@@ -91,27 +88,23 @@ def locateItemsName(conexion = None):
             sondaTemp[Name]['ID'] = 'Item' + str(Id)
         if Name in sondaHumedad:
             sondaHumedad[Name]['ID'] = 'Item' + str(Id)
-
-    print sondaTemp
-    print "AQUI"
-    print sondaHumedad
-    
+   
     cursor.close()
 
     if conexion == "":
         cnx.close()
-
-	
+    return
+    
 def getHistorico():
     try:
-        cnx = mysql.connector.connect(option_files="myopc.cnf")
+        cnx = mysql.connector.connect(option_files="ohapp.cnf")
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Something is wrong with your user name or password")
+            printError("Something is wrong with your user name or password")
         elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
+            printError("Database does not exist")
         else:
-            print(err)
+            printError(err)
 
     cursor = cnx.cursor()
 
@@ -132,14 +125,14 @@ def getHistorico():
 
 def getTemp(Sensor):
     try:
-        cnx = mysql.connector.connect(option_files="myopc.cnf")
+        cnx = mysql.connector.connect(option_files="ohapp.cnf")
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-         print("Something is wrong with your user name or password")
+         printError("Something is wrong with your user name or password")
         elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
+            printError("Database does not exist")
         else:
-            print(err)
+            printError(err)
 
     cursor = cnx.cursor()
 
@@ -161,14 +154,14 @@ def getTempEx(Sensor):
         return (datetime.datetime.now(), -99)
 
     try:
-        cnx = mysql.connector.connect(option_files="myopc.cnf")
+        cnx = mysql.connector.connect(option_files="ohapp.cnf")
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-         print("Something is wrong with your user name or password")
+         printError("Something is wrong with your user name or password")
         elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
+            printError("Database does not exist")
         else:
-            print(err)
+            printError(err)
 
     cursor = cnx.cursor()
 
@@ -190,14 +183,14 @@ def getHumedadEx(Sensor):
         return (datetime.datetime.now(), -99)
 
     try:
-        cnx = mysql.connector.connect(option_files="myopc.cnf")
+        cnx = mysql.connector.connect(option_files="ohapp.cnf")
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-         print("Something is wrong with your user name or password")
+         printError("Something is wrong with your user name or password")
         elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
+            printError("Database does not exist")
         else:
-            print(err)
+            printError(err)
 
     cursor = cnx.cursor()
 
@@ -252,14 +245,14 @@ def ordenarDhcpFijas(direccion):
     
 def getStaticDhcp():
     try:
-        cnx = mysql.connector.connect(option_files="myopc.cnf")
+        cnx = mysql.connector.connect(option_files="ohapp.cnf")
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Something is wrong with your user name or password")
+            printError("Something is wrong with your user name or password")
         elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
+            printError("Database does not exist")
         else:
-            print(err)
+            printError(err)
         
     cursor = cnx.cursor()
 
@@ -302,12 +295,17 @@ def temp():
 @app.route("/red")
 def showRed():
     getPresences()
-    direcciones = dhcpLeases.getCurrentLeases()
-    direccionesFijas = getStaticDhcp()
+    
+    direcciones = dhcpLeases.getCurrentLeases1()
+
+    return render_template("redlocal1.html", titulo = "Diseno Red", 
+                            presencia = sondaPresencia, tabla = direcciones)     
+#    direcciones = dhcpLeases.getCurrentLeases()
+#    direccionesFijas = getStaticDhcp()
     
     
-    return render_template("redlocal.html", titulo = "Diseno Red", 
-                            presencia = sondaPresencia, tabla = direcciones, tablaFija = direccionesFijas) 
+#    return render_template("redlocal.html", titulo = "Diseno Red", 
+#                            presencia = sondaPresencia, tabla = direcciones, tablaFija = direccionesFijas) 
 
 
 @app.route("/raspberry")
@@ -334,30 +332,18 @@ def swi():
 def historico():
     vFechas, vValores = getHistorico()
     return render_template("historico.html", titulo = "Grafico Historico", fechas = vFechas, valores = vValores) 
+
+    
 #
-# Comienzo
+# Comienzo del código
 #
-
-try:
-    cnx = mysql.connector.connect(option_files="myopc.cnf")
-except mysql.connector.Error as err:
-    if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-        print("Something is wrong with your user name or password")
-    elif err.errno == errorcode.ER_BAD_DB_ERROR:
-        print("Database does not exist")
-    else:
-        print(err)
-
-initConfiguration(cnx)
-
-locateItemsName(cnx)
-
-cnx.close()
 
 if len(sys.argv) == 2:
     opt_debug = True
 else:
     opt_debug = False
+
+initConfiguration()
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug = opt_debug)
