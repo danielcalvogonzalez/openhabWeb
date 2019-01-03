@@ -6,4 +6,4 @@ que accede a los datos de un servidor openHAB doméstico.
 
 El sistema está siempre en desarrollo.
 
-El código está preparado para funcionar con *python3*
+El código está preparado para funcionar con **python3**
