@@ -33,16 +33,37 @@ class IPObject(object):
     def __repr__(self):
         return ("Object {} has {}, name {} in pool {} - {}".format(self.ip,self.mac,self.name,self.pool,self.poolName))
         
-    
-def ordenar(direccion):
+def contarPorPool(lista, tipoPool):
+    nCuantos = 0
+    for objeto in lista:
+        if objeto.pool == tipoPool:
+            nCuantos+=1
+    return nCuantos
+
+def agregarPorPool(lista):
+    contadores = {}
+    maximo=-1
+    for objeto in lista:
+        if objeto.pool in contadores:
+            contadores[objeto.pool] += 1
+        else:
+            contadores[objeto.pool] = 1
+        if objeto.pool > maximo:
+            maximo = objeto.pool
+    lista=[None]*maximo
+    for key, value in contadores.items():
+        lista[key-1] = value
+    return lista
+
+def oldOrdenar(direccion):
     trozos = direccion.keys()[0].split('.')
     return (int(trozos[3]))
 
-def ordenar1(direccion):
+def ordenar(direccion):
     trozos = direccion.ip.split('.')
     return (int(trozos[3]))
 
-def getCurrentLeases1():
+def getCurrentLeases():
     leases = IscDhcpLeases(DHCP_LEASES_FILENAME)
 
     currentLeases = leases.get_current() 
@@ -88,7 +109,7 @@ def getCurrentLeases1():
         dispositivo          = IPObject(ip)
         dispositivo.name     = desc
         dispositivo.mac      = mac.upper()
-        dispositivo.pool     = pool
+        dispositivo.pool     = int(pool)
         dispositivo.poolName = poolName
         dispositivo.endDate  = 'N/A'
         resultado.append(dispositivo)
@@ -97,11 +118,11 @@ def getCurrentLeases1():
 
     util.closeDDBB(cnx)
     
-    resultado.sort(key=ordenar1)
+    resultado.sort(key=ordenar)
     
     return resultado
 
-def getCurrentLeases():
+def _oldGetCurrentLeases():
     leases = IscDhcpLeases(DHCP_LEASES_FILENAME)
 
     currentLeases = leases.get_current() 

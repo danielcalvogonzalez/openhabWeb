@@ -3,40 +3,9 @@
 	
 	<div class="contenido">
         <h3>Leases DHCP</h3>
-        <div>
-                
-<table class="blueTable">
-<thead>
-<tr>
-<th>Dirección IP</th>
-<th>MAC Address</th>
-<th>Nombre</th>
-<th>Desde</th>
-<th>Hasta</th>
 
-</tr>
-</thead>
-<tbody>
-{% for item in tabla %}
-<tr>
-{% for key, valor in item.iteritems() %}
-<td>{{ key }}</td>
-<td>{{ valor["ethernet"] }}</td>
-<td>{{ valor["hostname"] }}</td>
-<td>{{ valor["start"] }}</td>
-<td>{{ valor["end"] }}</td>
-{% endfor %}
-</tr>
-{% endfor %}
-</tbody>
-</table>
-        </div>
- 
-<canvas height="50">
-</canvas>
-
- 
-        <h3>DHCP Estáticas</h3>
+        <canvas height="30"> </canvas>
+        
         <div>
 <table class="blueTable">
 <thead>
@@ -50,13 +19,13 @@
 </tr>
 </thead>
 <tbody>
-{% for item in tablaFija %}
+{% for item in tabla %}
 <tr>
 <td>{{ item["ip"] }} </td>
-<td>{{ item["ethernet"] }}</td>
-<td>{{ item["hostname"] }}</td>
-<td>{{ item["pool"] }}</td>
-<td> valor["end"] </td>
+<td>{{ item["mac"] }}</td>
+<td>{{ item["name"] }}</td>
+<td>{{ item["poolName"] }}</td>
+<td>{{ item["endDate"] }} </td>
 </tr>
 {% endfor %}
 </tbody>
@@ -66,7 +35,164 @@
   
 <canvas height="50">
 </canvas>
-  
+
+<div class="fila">
+    <div class="col1">
+        <h5>Fija</h5>
+<canvas data-type="radial-gauge"
+    data-width="150"
+    data-height="150"
+
+    data-min-value="0"
+    data-start-angle="90"
+    data-ticks-angle="180"
+    data-value-box="false"
+    data-max-value="100"
+    data-major-ticks="0,20,40,60,80,100"
+    data-minor-ticks="2"
+    data-stroke-ticks="true"
+    data-highlights='[
+        {"from": 0, "to": 80, "color": "rgba(50, 50, 200, .75)"},
+        {"from": 80, "to": 100, "color": "rgba(210, 50, 50, .75)"}
+    ]'
+    data-color-plate="#fff"
+    data-color-units="#000"
+    data-font-units-size="40"
+    data-border-shadow-width="0"
+    data-borders="false"
+    data-needle-type="arrow"
+    data-needle-width="3"
+    data-needle-circle-size="7"
+    data-needle-circle-outer="true"
+    data-needle-circle-inner="false"
+    data-animation-duration="1500"
+    data-animation-rule="linear"
+    data-value="{{ porcentajes[0] }}"
+></canvas>
+<div class="eti">
+        {{ agregados[0] }}
+   </div>
+
+</div>
+<div class="col1">
+        <h5>Static</h5>
+<canvas data-type="radial-gauge"
+    data-width="150"
+    data-height="150"
+    
+    data-min-value="0"
+    data-start-angle="90"
+    data-ticks-angle="180"
+    data-value-box="false"
+    data-max-value="100"
+    data-major-ticks="0,20,40,60,80,100"
+    data-minor-ticks="2"
+    data-stroke-ticks="true"
+    data-highlights='[
+        {"from": 0, "to": 80, "color": "rgba(50, 50, 200, .75)"},
+        {"from": 80, "to": 100, "color": "rgba(210, 50, 50, .75)"}
+    ]'
+    data-color-plate="#fff"
+    data-color-units="#000"
+    data-font-units-size="40"
+    data-border-shadow-width="0"
+    data-borders="false"
+    data-needle-type="arrow"
+    data-needle-width="3"
+    data-needle-circle-size="7"
+    data-needle-circle-outer="true"
+    data-needle-circle-inner="false"
+    data-animation-duration="1500"
+    data-animation-rule="linear"
+    data-value="{{ porcentajes[1] }}"
+></canvas>
+<div class="eti">
+        {{ agregados[1] }}
+   </div>
+
+</div>
+<div class="col1">
+        <h5>DHCP</h5>
+<canvas data-type="radial-gauge"
+    data-width="150"
+    data-height="150"
+    
+    data-min-value="0"
+    data-start-angle="90"
+    data-ticks-angle="180"
+    data-value-box="false"
+    data-max-value="100"
+    data-major-ticks="0,20,40,60,80,100"
+    data-minor-ticks="2"
+    data-stroke-ticks="true"
+    data-highlights='[
+        {"from": 0, "to": 80, "color": "rgba(50, 50, 200, .75)"},
+        {"from": 80, "to": 100, "color": "rgba(210, 50, 50, .75)"}
+    ]'
+    data-color-plate="#fff"
+    data-color-units="#000"
+    data-font-units-size="40"
+    data-border-shadow-width="0"
+    data-borders="false"
+    data-needle-type="arrow"
+    data-needle-width="3"
+    data-needle-circle-size="7"
+    data-needle-circle-outer="true"
+    data-needle-circle-inner="false"
+    data-animation-duration="1500"
+    data-animation-rule="linear"
+    data-value="{{ porcentajes[2] }}"
+></canvas>
+<div class="eti">
+        {{ agregados[2] }}
+   </div>
+
+</div>
+</div>
+
+<div class="fila">
+    <div class="col1 vacia"></div>
+    <div class="col1">
+            <h5>Fija</h5>
+<canvas data-type="radial-gauge"
+    data-width="150"
+    data-height="150"
+    
+    data-min-value="0"
+    data-start-angle="90"
+    data-ticks-angle="180"
+    data-value-box="false"
+    data-max-value="100"
+    data-major-ticks="0,20,40,60,80,100"
+    data-minor-ticks="2"
+    data-stroke-ticks="true"
+    data-highlights='[
+        {"from": 0, "to": 80, "color": "rgba(50, 50, 200, .75)"},
+        {"from": 80, "to": 100, "color": "rgba(210, 50, 50, .75)"}
+    ]'
+    data-color-plate="#fff"
+    data-color-units="#000"
+    data-font-units-size="40"
+    data-border-shadow-width="0"
+    data-borders="false"
+    data-needle-type="arrow"
+    data-needle-width="3"
+    data-needle-circle-size="7"
+    data-needle-circle-outer="true"
+    data-needle-circle-inner="false"
+    data-animation-duration="1500"
+    data-animation-rule="linear"
+    data-value="{{ porcentajes[3] }}"
+></canvas>
+<div class="eti">
+        {{ agregados[3] }}
+   </div>
+</div>
+</div>
+
+<canvas height="50">
+</canvas>
+
 		<h3>Esquema Red Local</h3>
         <div class="imagen-foto">
 			<img src="/static/images/RedLocal.jpg">

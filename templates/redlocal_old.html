@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block contenido %}
+	
+	<div class="contenido">
+        <h3>Leases DHCP</h3>
+        <div>
+                
+<table class="blueTable">
+<thead>
+<tr>
+<th>Dirección IP</th>
+<th>MAC Address</th>
+<th>Nombre</th>
+<th>Desde</th>
+<th>Hasta</th>
+
+</tr>
+</thead>
+<tbody>
+{% for item in tabla %}
+<tr>
+{% for key, valor in item.iteritems() %}
+<td>{{ key }}</td>
+<td>{{ valor["ethernet"] }}</td>
+<td>{{ valor["hostname"] }}</td>
+<td>{{ valor["start"] }}</td>
+<td>{{ valor["end"] }}</td>
+{% endfor %}
+</tr>
+{% endfor %}
+</tbody>
+</table>
+        </div>
+ 
+<canvas height="50">
+</canvas>
+
+ 
+        <h3>DHCP Estáticas</h3>
+        <div>
+<table class="blueTable">
+<thead>
+<tr>
+<th>Dirección IP</th>
+<th>MAC Address</th>
+<th>Nombre</th>
+<th>Pool</th>
+<th>Hasta</th>
+
+</tr>
+</thead>
+<tbody>
+{% for item in tablaFija %}
+<tr>
+<td>{{ item["ip"] }} </td>
+<td>{{ item["ethernet"] }}</td>
+<td>{{ item["hostname"] }}</td>
+<td>{{ item["pool"] }}</td>
+<td> valor["end"] </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+        </div>
+  
+<canvas height="50">
+</canvas>
+  
+		<h3>Esquema Red Local</h3>
+        <div class="imagen-foto">
+			<img src="/static/images/RedLocal.jpg">
+        </div>
+        
+        <div class="fila">
+            <div class="col1">
+                <h5>Estado Dispositivos</h5>
+                {% for item in presencia %}
+                    <div class="footer">
+                    
+                        {% if presencia[item].Status == "ON" %}
+                            <div class="ON"></div>
+                        {% else %}
+                            <div class="OFF"></div>
+                        {% endif %}
+                        <div class="texto">{{ presencia[item].Nombre }} </div>
+                    </div>
+                    
+                    
+                {% endfor %}
+            </div>
+            <div class="col1 vacia"></div>
+            <div class="col1 vacia"></div>
+        </div>
+    </div>
+
+    
+{% endblock %}

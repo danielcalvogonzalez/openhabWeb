@@ -242,10 +242,20 @@ def temp():
 def showRed():
     getPresences()
     
-    direcciones = dhcpLeases.getCurrentLeases1()
+    direcciones = dhcpLeases.getCurrentLeases()
 
-    return render_template("redlocal1.html", titulo = "Diseño Red", 
-                            presencia = settings.sondaPresencia, tabla = direcciones)     
+    ocupacion = dhcpLeases.agregarPorPool(direcciones)
+
+    porcentajes = [None]*len(settings.poolMaxIPs)
+
+    for i in range(len(settings.poolMaxIPs)):
+        porcentajes[i] = ocupacion[i] / settings.poolMaxIPs[i] * 100
+
+    return render_template("redlocal.html", titulo = "Diseño Red", 
+                            presencia = settings.sondaPresencia, tabla = direcciones, 
+                            agregados=ocupacion, poolMaxIPs=settings.poolMaxIPs, porcentajes=porcentajes)     
+
+
 #    direcciones = dhcpLeases.getCurrentLeases()
 #    direccionesFijas = getStaticDhcp()
     
@@ -277,7 +287,7 @@ def swi():
 @app.route("/historico")
 def historico():
     vFechas, vValores = getHistorico()
-    return render_template("historico.html", titulo = "Grafico Historico", fechas = vFechas, valores = vValores) 
+    return render_template("historico.html", titulo = "Gráfico Histórico", fechas = vFechas, valores = vValores) 
 
     
 #

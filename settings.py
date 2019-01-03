@@ -11,3 +11,5 @@ SERVER_ADDRESS_STATE = 'http://192.168.24.6:8080/rest/items/{0}/state'
 sondaTemp      = {}
 sondaHumedad   = {}
 sondaPresencia = {}
+
+poolMaxIPs = [15, 34, 101, 7]
