@@ -6,3 +6,7 @@ Copiar la configuracion de DHCP
 Copiar script arranque DHCP que espera a tener red local
 No funciona mostrar un item "date" en un sitemap
 
+
+Pagina DHCP
+Comprobar que si una direccion MAC tiene dirección IP pero no esta en la bases de datos
+Si no está, marcarlo de alguna manera en la tabla

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+mysqldump -uroot -pmysqlroot openhab2 | gzip > /home/openhabian/backup/'Backup-'`date +\%a`'.gz'
+logger -p local3.info "Backup realizado"
+
