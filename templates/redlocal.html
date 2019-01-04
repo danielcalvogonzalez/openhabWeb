@@ -23,7 +23,11 @@
 <tr>
 <td>{{ item["ip"] }} </td>
 <td>{{ item["mac"] }}</td>
-<td>{{ item["name"] }}</td>
+{% if item['known'] %}
+    <td>{{ item["name"] }}</td>
+{% else %}
+    <td><font color="red"><b>{{ item["name"] }}</b></font></td>
+{% endif %}
 <td>{{ item["poolName"] }}</td>
 <td>{{ item["endDate"] }} </td>
 </tr>

@@ -1,5 +1,5 @@
-# coding=utf-8
 #!/usr/bin/python3
+# coding=utf-8
 # 
 # Este codigo es usado desde el programa principal para
 # mostrar el resultado de las leases activas de DHCP
@@ -27,6 +27,7 @@ class IPObject(object):
         self.mac   = ''
         self.pool  = -1
         self.poolName = ''
+        self.known    = False
 #@ self.endDate        
         
         
@@ -54,10 +55,6 @@ def agregarPorPool(lista):
     for key, value in contadores.items():
         lista[key-1] = value
     return lista
-
-def oldOrdenar(direccion):
-    trozos = direccion.keys()[0].split('.')
-    return (int(trozos[3]))
 
 def ordenar(direccion):
     trozos = direccion.ip.split('.')
@@ -93,12 +90,14 @@ def getCurrentLeases():
         
         cursor.execute(txtQuery, (objeto.mac,))
         
+        encontrado = False
         for nombre in cursor:
+            encontrado = True
             objeto.name = nombre[0]
+        objeto.known = encontrado
         
     cursor.close()
 
-    
     cursor = cnx.cursor()
 
     query = ("select Mac, IPAddress, Descripcion, Pool, PoolName from Dispositivos where Pool in (1,2,4)")
@@ -112,6 +111,7 @@ def getCurrentLeases():
         dispositivo.pool     = int(pool)
         dispositivo.poolName = poolName
         dispositivo.endDate  = 'N/A'
+        dispositivo.known    = True
         resultado.append(dispositivo)
 
     cursor.close()
@@ -121,6 +121,13 @@ def getCurrentLeases():
     resultado.sort(key=ordenar)
     
     return resultado
+
+
+
+
+def _oldOrdenar(direccion):
+    trozos = direccion.keys()[0].split('.')
+    return (int(trozos[3]))
 
 def _oldGetCurrentLeases():
     leases = IscDhcpLeases(DHCP_LEASES_FILENAME)

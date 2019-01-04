@@ -79,14 +79,14 @@ def initConfiguration(conexion = None):
         cnx.close()
     return
     
-def getHistorico():
+def getHistorico(tabla):
     cnx = util.openDDBB()
     
     cursor = cnx.cursor()
 
-    query = ("select Dia, Media from Item1_Daily order by Dia desc limit 30")
+    texto = ("select Dia, Media from {} order by Dia desc limit 30".format(tabla))
 
-    cursor.execute(query)
+    cursor.execute(texto)
 
     listaFechas = []
     listaValores = []
@@ -286,8 +286,17 @@ def swi():
 
 @app.route("/historico")
 def historico():
-    vFechas, vValores = getHistorico()
-    return render_template("historico.html", titulo = "Gráfico Histórico", fechas = vFechas, valores = vValores) 
+    # Exterior
+    vFechasExterior, vValoresExterior = getHistorico("Item1_Daily")
+    # Despacho
+    vFechasDespacho, vValoresDespacho = getHistorico("Item7_Daily")
+    # Buhardilla
+    vFechasBuhardilla, vValoresBuhardilla = getHistorico("Item15_Daily")
+
+    return render_template("historico.html", titulo = "Gráfico Histórico", 
+        fechas1 = vFechasExterior, valores1 = vValoresExterior,
+        fechas2 = vFechasDespacho, valores2 = vValoresDespacho,
+        fechas3 = vFechasBuhardilla, valores3 = vValoresBuhardilla) 
 
     
 #

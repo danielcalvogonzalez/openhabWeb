@@ -2,13 +2,13 @@
 {% block contenido %}
 	
 	<div class="contenido">
-		<h3>Grafico</h3>
+		<h3>Grafico Vva</h3>
 		<div id="myDiv"></div>
 	
 <script>
     var trace1 = {
-    x: {{fechas|safe}},
-    y: {{valores}},
+    x: {{fechas1|safe}},
+    y: {{valores1}},
     type: 'scatter',
     line: {shape: 'spline'},
     name: 'Temperatura',
@@ -54,7 +54,113 @@ Plotly.newPlot('myDiv', data, layout);
 </script>
 
 
+
+
+
+<h3>Grafico Despacho</h3>
+<div id="myDiv2"></div>
+
+<script>
+var trace2 = {
+x: {{fechas2|safe}},
+y: {{valores2}},
+type: 'scatter',
+line: {shape: 'spline'},
+name: 'Temperatura',
+hoverinfo: 'x+y'
+};
+
+var selectorOptions2 = {
+buttons: [{
+    step: 'month',
+    stepmode: 'backward',
+    count: 1,
+    label: '1m'
+}, {
+    step: 'month',
+    stepmode: 'backward',
+    count: 6,
+    label: '6m'
+}, {
+    step: 'year',
+    stepmode: 'todate',
+    count: 1,
+    label: 'YTD'
+}
+],
+};    
+
+var data2 = [trace2];
+var layout2 = {
+title: 'Gráfico medias diarias',
+xaxis: {
+title: 'Fechas',
+rangeselector: selectorOptions,
+rangeslider: {}
+},
+yaxis: {
+title: 'Grados'
+},
+paper_bgcolor: '#ffffff'
+};
+
+Plotly.newPlot('myDiv2', data2, layout2);
+
+</script>
+
+
+<h3>Grafico Buhardilla</h3>
+<div id="myDiv3"></div>
+
+<script>
+var trace1 = {
+x: {{fechas3|safe}},
+y: {{valores3}},
+type: 'scatter',
+line: {shape: 'spline'},
+name: 'Temperatura',
+hoverinfo: 'x+y'
+};
+
+var selectorOptions = {
+buttons: [{
+    step: 'month',
+    stepmode: 'backward',
+    count: 1,
+    label: '1m'
+}, {
+    step: 'month',
+    stepmode: 'backward',
+    count: 6,
+    label: '6m'
+}, {
+    step: 'year',
+    stepmode: 'todate',
+    count: 1,
+    label: 'YTD'
+}
+],
+};    
+
+var data = [trace1];
+var layout = {
+title: 'Gráfico medias diarias',
+xaxis: {
+title: 'Fechas',
+rangeselector: selectorOptions,
+rangeslider: {}
+},
+yaxis: {
+title: 'Grados'
+},
+paper_bgcolor: '#ffffff'
+};
+
+Plotly.newPlot('myDiv3', data, layout);
+
+</script>
+
 </div>
 
-    
+
 {% endblock %}
