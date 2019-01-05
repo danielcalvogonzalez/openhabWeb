@@ -10,9 +10,9 @@ El código está preparado para funcionar con **python3**
 
 **Información adicional**
 
-/bbdd	Contiene los scripts python y crontab para hacer copias de seguridad de la base de datos
+* /bbdd	Contiene los scripts python y crontab para hacer copias de seguridad de la base de datos
 	Y consolidar en tablas horarias y diarias la información de los sensores
 
-/templates	Directorio con los templates **jinja**
+* /templates	Directorio con los templates **jinja**
 
-/static		Todo el contenido estático del servidor web
+* /static		Todo el contenido estático del servidor web
