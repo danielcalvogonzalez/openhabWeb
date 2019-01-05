@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+# Realiza una copia de openHAB dejando el resultado en el directorio
+# /home/root y con nombre el dia de la semana.zip
+#
+# Solo tendrá, por tanto, los últimos siete backups
+#
+/usr/share/openhab2/runtime/bin/backup /home/root/`date +%A`.zip
