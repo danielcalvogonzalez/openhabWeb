@@ -298,6 +298,15 @@ def historico():
         fechas2 = vFechasDespacho, valores2 = vValoresDespacho,
         fechas3 = vFechasBuhardilla, valores3 = vValoresBuhardilla) 
 
+@app.route("/health")
+def health():
+    lista = {}
+    for item in settings.sondaTemp:
+        if "Rasp" not in item:
+            lista[item] = util.isUpdatedTable(settings.sondaTemp[item]['ID'])
+    print (lista)
+    return render_template("health.html", titulo = "Resumen Salud", 
+        historico = lista)
     
 #
 # Comienzo del código

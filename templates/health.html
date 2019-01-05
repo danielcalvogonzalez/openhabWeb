@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+	<div class="contenido">
+
+		<h3>Salud histórico SQL</h3>
+		{% for i in historico %}
+			<h5>{{ i }}
+			{% if historico[i] %}
+				<div class="ON"></div>
+			{% else %}
+				<div class="OFF"></div>
+			{% endif %}
+			</h5>
+		{% endfor %}
+    </div>
+
+
+{% endblock %}
