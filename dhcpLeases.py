@@ -69,9 +69,16 @@ def getCurrentLeases():
 
     for objeto in currentLeases.values():
         dispositivo      = IPObject(objeto.ip)
-        dispositivo.name = objeto.hostname
-        dispositivo.mac  = objeto.ethernet.upper()
-        dispositivo.pool = 3
+#
+# Algunos dispositivos no registran su nombre en el servidor DHCP
+# así que le asignamos el nombre "Desconocido"        
+#
+        if objeto.hostname == "":
+            dispositivo.name = "Desconocido"
+        else:
+            dispositivo.name = objeto.hostname
+        dispositivo.mac      = objeto.ethernet.upper()
+        dispositivo.pool     = 3
         dispositivo.poolName = 'DHCP'
         dispositivo.endDate  = objeto.end
         resultado.append(dispositivo)
