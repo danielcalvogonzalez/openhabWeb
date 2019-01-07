@@ -248,10 +248,13 @@ def showRed():
 
     porcentajes = [None]*len(settings.poolMaxIPs)
 
+    nTotalDirecciones = 0
     for i in range(len(settings.poolMaxIPs)):
         porcentajes[i] = ocupacion[i] / settings.poolMaxIPs[i] * 100
+        nTotalDirecciones += ocupacion[i]
 
     return render_template("redlocal.html", titulo = "Diseño Red", 
+                            nTotal = nTotalDirecciones,
                             presencia = settings.sondaPresencia, tabla = direcciones, 
                             agregados=ocupacion, poolMaxIPs=settings.poolMaxIPs, porcentajes=porcentajes)     
 
