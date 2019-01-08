@@ -49,10 +49,11 @@ var layout = {
     paper_bgcolor: '#ffffff'
 };
 
-Plotly.newPlot('myDiv', data, layout);
+Plotly.newPlot('myDiv', data, layout, {responsive: true});
 
 </script>
-
+<!--- Muy importante tomar tona de {responsive: true} al llamar a Plotly.newPlot -->
+<!--- Es lo que consigue que funcione bien en móviles -->
 
 
 
@@ -104,7 +105,7 @@ title: 'Grados'
 paper_bgcolor: '#ffffff'
 };
 
-Plotly.newPlot('myDiv2', data2, layout2);
+Plotly.newPlot('myDiv2', data2, layout2, {responsive: true});
 
 </script>
 
@@ -156,7 +157,7 @@ title: 'Grados'
 paper_bgcolor: '#ffffff'
 };
 
-Plotly.newPlot('myDiv3', data, layout);
+Plotly.newPlot('myDiv3', data, layout, {responsive: true});
 
 </script>
 
