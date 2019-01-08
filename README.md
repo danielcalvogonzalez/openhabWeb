@@ -16,3 +16,7 @@ El código está preparado para funcionar con **python3**
 * /templates	Directorio con los templates **jinja**
 
 * /static		Todo el contenido estático del servidor web
+
+**Otros enlaces**
+
+Dispone de la URL http://server/health para comprobar si los datos están actualizados en la base de datos.
