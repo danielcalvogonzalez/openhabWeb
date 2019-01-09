@@ -301,6 +301,20 @@ def historico():
         fechas2 = vFechasDespacho, valores2 = vValoresDespacho,
         fechas3 = vFechasBuhardilla, valores3 = vValoresBuhardilla) 
 
+@app.route("/historico1")
+def historico1():
+    # Exterior
+    vFechasExterior, vValoresExterior = util.getLatestData("Item1")
+    # Despacho
+    vFechasDespacho, vValoresDespacho = util.getLatestData("Item7")
+    # Buhardilla
+    vFechasBuhardilla, vValoresBuhardilla = util.getLatestData("Item15")
+
+    return render_template("historico1.html", titulo = "Gráfico Histórico", 
+        fechas1 = vFechasExterior, valores1 = vValoresExterior,
+        fechas2 = vFechasDespacho, valores2 = vValoresDespacho,
+        fechas3 = vFechasBuhardilla, valores3 = vValoresBuhardilla) 
+
 @app.route("/health")
 def health():
     lista = {}

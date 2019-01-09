@@ -67,3 +67,31 @@ def isUpdatedTable(nombreTabla):
     cursor.close()
     closeDDBB(cnx)
     return False if nResultado1 == 0 or nResultado2 == 0 else True
+
+def getLatestData(tabla):
+    """
+    Obtiene la información de la base de datos de la tabla especificada
+    como parámetro.
+    La tabla debe ser la que contiene la información de todas las muestras
+    de los sensores, no la diaria, ni la mensual.
+    """
+    cnx = openDDBB()
+    
+    cursor = cnx.cursor()
+
+    """ 672 """
+
+    texto = ("select Time, Value from {} order by Time desc limit 672".format(tabla))
+
+    cursor.execute(texto)
+
+    listaFechas = []
+    listaValores = []
+    for (fecha, valor ) in cursor:
+
+        listaFechas.append(fecha.strftime('%Y-%m-%d %H:%M'))
+        listaValores.append(float(valor))
+
+    cursor.close()
+    closeDDBB(cnx)
+    return listaFechas, listaValores
