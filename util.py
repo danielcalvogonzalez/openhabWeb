@@ -95,3 +95,14 @@ def getLatestData(tabla):
     cursor.close()
     closeDDBB(cnx)
     return listaFechas, listaValores
+
+def mediaMovilRapido(lista, windowSize):
+    media = 0
+    for i in range(windowSize-1):
+        media += lista[i]
+
+    for contador in range(windowSize - 1, len(lista)):
+        media += lista[contador]
+        lista[contador] = media / windowSize
+        media -= lista[contador - windowSize + 1]
+    return lista

@@ -295,18 +295,26 @@ def historico():
     vFechasDespacho, vValoresDespacho = getHistorico("Item7_Daily")
     # Buhardilla
     vFechasBuhardilla, vValoresBuhardilla = getHistorico("Item15_Daily")
+    # Sótano
+    vFechasSotano, vValoresSotano = getHistorico("Item18_Daily")
+    # Garaje
+    vFechasGaraje, vValoresGaraje = getHistorico("Item23_Daily")
 
     return render_template("historico.html", titulo = "Gráfico Histórico", 
-        fechas1 = vFechasExterior, valores1 = vValoresExterior,
-        fechas2 = vFechasDespacho, valores2 = vValoresDespacho,
-        fechas3 = vFechasBuhardilla, valores3 = vValoresBuhardilla) 
+        fechas1 = vFechasExterior,   valores1 = vValoresExterior,
+        fechas2 = vFechasDespacho,   valores2 = vValoresDespacho,
+        fechas3 = vFechasBuhardilla, valores3 = vValoresBuhardilla,
+        fechas4 = vFechasSotano,     valores4 = vValoresSotano,
+        fechas5 = vFechasGaraje,     valores5 = vValoresGaraje) 
 
 @app.route("/historico1")
 def historico1():
     # Exterior
     vFechasExterior, vValoresExterior = util.getLatestData("Item1")
+    vValoresExterior = util.mediaMovilRapido(vValoresExterior,3)
     # Despacho
     vFechasDespacho, vValoresDespacho = util.getLatestData("Item7")
+    vValoresDespacho = util.mediaMovilRapido(vValoresDespacho,3)
     # Buhardilla
     vFechasBuhardilla, vValoresBuhardilla = util.getLatestData("Item15")
 
