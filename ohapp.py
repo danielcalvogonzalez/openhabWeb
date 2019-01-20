@@ -289,16 +289,22 @@ def swi():
 
 @app.route("/historico")
 def historico():
-    # Exterior
-    vFechasExterior, vValoresExterior = getHistorico("Item1_Daily")
-    # Despacho
-    vFechasDespacho, vValoresDespacho = getHistorico("Item7_Daily")
-    # Buhardilla
-    vFechasBuhardilla, vValoresBuhardilla = getHistorico("Item15_Daily")
-    # Sótano
-    vFechasSotano, vValoresSotano = getHistorico("Item18_Daily")
-    # Garaje
-    vFechasGaraje, vValoresGaraje = getHistorico("Item23_Daily")
+    for item in settings.sondaTemp:
+        if item == 'Temperatura':
+            # Exterior
+            vFechasExterior, vValoresExterior = getHistorico(settings.sondaTemp[item]['ID'] + "_Daily")
+        elif item == 'DespachoTemp':
+            # Despacho
+            vFechasDespacho, vValoresDespacho = getHistorico(settings.sondaTemp[item]['ID'] + "_Daily")
+        elif item == 'BuhardillaTemp':
+            # Buhardilla
+            vFechasBuhardilla, vValoresBuhardilla = getHistorico(settings.sondaTemp[item]['ID'] + "_Daily")
+        elif item == 'SotanoTemp':
+            # Sótano
+            vFechasSotano, vValoresSotano = getHistorico(settings.sondaTemp[item]['ID'] + "_Daily")
+        elif item == 'GarajeTemp':
+            # Garaje
+            vFechasGaraje, vValoresGaraje = getHistorico(settings.sondaTemp[item]['ID'] + "_Daily")
 
     return render_template("historico.html", titulo = "Gráfico Histórico", 
         fechas1 = vFechasExterior,   valores1 = vValoresExterior,
