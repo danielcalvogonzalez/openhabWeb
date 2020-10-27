@@ -4,7 +4,7 @@ certifi==2018.11.29
 chardet==3.0.4
 Click==7.0
 CommonMark==0.5.4
-cryptography==1.7.1
+cryptography==3.2
 docutils==0.14
 Flask==1.0.2
 idna==2.8
